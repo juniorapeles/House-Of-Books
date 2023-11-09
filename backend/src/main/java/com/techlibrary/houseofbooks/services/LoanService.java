@@ -2,6 +2,7 @@ package com.techlibrary.houseofbooks.services;
 
 import com.techlibrary.houseofbooks.dto.LoanDTO;
 import com.techlibrary.houseofbooks.dto.LoanRequestDTO;
+import com.techlibrary.houseofbooks.dto.ReturnDTO;
 import com.techlibrary.houseofbooks.entities.Book;
 import com.techlibrary.houseofbooks.entities.Loan;
 import com.techlibrary.houseofbooks.repositories.BookRepository;
@@ -65,5 +66,33 @@ public class LoanService {
        }else {
            return null;
        }
+    }
+
+
+    public ReturnDTO returnBook(Long loanId) {
+        Optional<Loan> optionalLoan = repostory.findById(loanId);
+
+        if(optionalLoan.isPresent()){
+            Loan loan = optionalLoan.get();
+
+            List<Book> books = loan.getBooks();
+            for(Book book : books ){
+                book.setAvailable(true);
+            }
+            loan.setBooks(null);
+
+            loan.setStatus("Returned");
+
+            repostory.save(loan);
+            bookRepository.saveAll(books);
+
+            ReturnDTO returnDTO = new ReturnDTO();
+            returnDTO.setLoanId(loan.getId());
+            returnDTO.setReturnedBooks(books);
+
+            return returnDTO;
+        }else{
+            return null;
+        }
     }
 }
