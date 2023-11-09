@@ -16,17 +16,20 @@ public class Book implements Serializable {
 	private String name;
 	private String author;
 
-	@ManyToOne // Indica que um livro pertence a uma única biblioteca
-	@JoinColumn(name = "library_id") // Especifica a coluna na tabela Book que faz referência à Library
-	private Library library; // Adicione a propriedade Library para representar o relacionamento
+	@ManyToOne
+	@JoinColumn(name = "library_id")
+	private Library library;
+
+	private boolean available;
 
 	public Book() {
 	}
 
-	public Book(Long id, String name, String author) {
+	public Book(Long id, String name, String author, boolean available) {
 		this.id = id;
 		this.name = name;
 		this.author = author;
+		this.available = available;
 	}
 
 	public Long getId() {
@@ -61,9 +64,17 @@ public class Book implements Serializable {
 		this.library = library;
 	}
 
+	public boolean isAvailable() {
+		return available;
+	}
+
+	public void setAvailable(boolean available) {
+		this.available = available;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(author, id, name);
+		return Objects.hash(author, id, name, available);
 	}
 
 	@Override
@@ -75,6 +86,10 @@ public class Book implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Book other = (Book) obj;
-		return Objects.equals(author, other.author) && Objects.equals(id, other.id) && Objects.equals(name, other.name);
+		return Objects.equals(author, other.author)
+				&& Objects.equals(id, other.id)
+				&& Objects.equals(name, other.name)
+				&& available == other.available;
 	}
+
 }

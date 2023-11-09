@@ -1,5 +1,7 @@
 package com.techlibrary.houseofbooks.dto;
 
+import com.techlibrary.houseofbooks.entities.Book;
+
 import java.util.Date;
 import java.util.List;
 public class LoanDTO {
@@ -7,19 +9,19 @@ public class LoanDTO {
     private Date startDate;
     private Date dueDate;
     private String status;
-    private UserDTO user;
-    private List<Book> books;
+    private Long userId;
+    private Long bookId;
 
-    public LoanDTO() {
+    public LoanDTO(){
     }
 
-    public LoanDTO(Long id, Date startDate, Date dueDate, String status, UserDTO user, List<Book> books) {
+    public LoanDTO(Long id, Date startDate, Date dueDate, String status, Long userId, Long bookId) {
         this.id = id;
         this.startDate = startDate;
         this.dueDate = dueDate;
         this.status = status;
-        this.user = user;
-        this.books = books;
+        this.userId = userId;
+        this.bookId = bookId;
     }
 
     public Long getId() {
@@ -54,19 +56,19 @@ public class LoanDTO {
         this.status = status;
     }
 
-    public UserDTO getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(UserDTO user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public List<Book> getBooks() {
-        return books;
+    public Long getBookId() {
+        return bookId;
     }
 
-    public void setBooks(List<Book> books) {
-        this.books = books;
+    public void setBookId(Long bookId) {
+        this.bookId = bookId;
     }
 }

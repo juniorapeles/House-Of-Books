@@ -21,9 +21,9 @@ import com.techlibrary.houseofbooks.services.BookService;
 @RestController
 @RequestMapping(value = "/books")
 public class BookResource {
-
 	@Autowired
 	private BookService service;
+
 
 	@GetMapping
 	public ResponseEntity<List<BookDTO>> findAll() {
