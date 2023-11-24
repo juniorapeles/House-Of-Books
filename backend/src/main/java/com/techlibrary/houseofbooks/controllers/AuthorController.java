@@ -32,10 +32,10 @@ public class AuthorController {
         return authorService.createAuthor(author);
     }
 
-    @PutMapping("/{id}")
-    public Author updateAuthor(@PathVariable Long id, @RequestBody Author author) {
-        return authorService.updateAuthor(id, author);
-    }
+//    @PutMapping("/{id}")
+//    public Author updateAuthor(@PathVariable Long id, @RequestBody Author author) {
+//        return authorService.updateAuthor(id, author);
+//    }
 
     @DeleteMapping("/{id}")
     public void deleteAuthor(@PathVariable Long id) {

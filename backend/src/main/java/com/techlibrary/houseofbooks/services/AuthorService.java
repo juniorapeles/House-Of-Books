@@ -29,18 +29,18 @@ public class AuthorService {
         repository.deleteById(id);
     }
 
-    public Author updateAuthor(Long id, Author updatedAuthor) {
-        Optional<Author> optionalAuthor = repository.findById(id);
-
-        if (optionalAuthor.isPresent()) {
-            Author existingAuthor = optionalAuthor.get();
-            existingAuthor.setName(updatedAuthor.getName());
-            existingAuthor.setBiography(updatedAuthor.getBiography());
-
-            return repository.save(existingAuthor);
-        } else {
-            // Lógica para tratar o autor não encontrado
-            return null; // ou lançar uma exceção, dependendo do caso
-        }
-    }
+//    public Author updateAuthor(Long id, Author updatedAuthor) {
+//        Optional<Author> optionalAuthor = repository.findById(id);
+//
+//        if (optionalAuthor.isPresent()) {
+//            Author existingAuthor = optionalAuthor.get();
+//            existingAuthor.setName(updatedAuthor.getName());
+//            existingAuthor.setBiography(updatedAuthor.getBiography());
+//
+//            return repository.save(existingAuthor);
+//        } else {
+//            // Lógica para tratar o autor não encontrado
+//            return null; // ou lançar uma exceção, dependendo do caso
+//        }
+//    }
 }
