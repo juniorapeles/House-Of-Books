@@ -1,4 +1,4 @@
-package com.techlibrary.houseofbooks.entites;
+package com.techlibrary.houseofbooks.entities;
 
 import jakarta.persistence.*;
 
@@ -10,7 +10,7 @@ public class Author {
     private Long id;
     private String name;
     @Column(columnDefinition = "TEXT")
-    private String biography ;
+    private String biography;
 
     public Long getId() {
         return id;

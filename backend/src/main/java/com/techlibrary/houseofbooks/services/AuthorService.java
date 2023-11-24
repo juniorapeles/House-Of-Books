@@ -1,6 +1,6 @@
 package com.techlibrary.houseofbooks.services;
 
-import com.techlibrary.houseofbooks.entites.Author;
+import com.techlibrary.houseofbooks.entities.Author;
 import com.techlibrary.houseofbooks.repositories.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
