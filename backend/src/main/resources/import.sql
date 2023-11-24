@@ -1,1 +1,2 @@
 INSERT INTO tb_author (name, biography) VALUES ('José', 'José vida loca');
+INSERT INTO tb_user (name, Rg, email, telephone, adress) VALUES ('João Ribeiro', '123.456.789-00', 'fulano@example.com', '(00) 12345-6789', 'Rua dos Testes');
