@@ -1,6 +1,5 @@
 package com.techlibrary.houseofbooks.controllers;
 
-import com.techlibrary.houseofbooks.entities.Author;
 import com.techlibrary.houseofbooks.entities.PublishingCompany;
 import com.techlibrary.houseofbooks.services.ServicePublishingCompany;
 import org.springframework.beans.factory.annotation.Autowired;
