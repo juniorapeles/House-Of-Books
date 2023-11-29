@@ -8,7 +8,14 @@ Esse é um projeto feito para o Aprendizado de Java, Spring e Angular.
 
 A api possui alguns métodos como 
 
-* Cadastro de livros
+* Crud de livros
+* Crud de Autores
+* Crud de Pessoas
+* Crud de Categorias
+
+## Funções:
+
+* Empréstimos de livros.
 
 
 
