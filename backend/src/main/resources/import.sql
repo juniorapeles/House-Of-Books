@@ -15,3 +15,4 @@ INSERT INTO tb_book (name, img_path, author_id, publication_date, description, c
 INSERT INTO tb_book (name, img_path, author_id, publication_date, description, categorie_id, publishing_Company_id) VALUES ('O Sol é para Todos', 'imagem_o_soleparatodos.jpg', 4, '1960-07-11', 'Explora questões raciais nos EUA.', 1, 1);
 INSERT INTO tb_book (name, img_path, author_id, publication_date, description, categorie_id, publishing_Company_id) VALUES ('Cem Anos de Solidão', 'imagem_cem_anos_de_solidao.jpg', 5, '1967-05-30', 'Realismo mágico em uma saga familiar.', 1, 1);
 INSERT INTO tb_book (name, img_path, author_id, publication_date, description, categorie_id, publishing_Company_id) VALUES ('O Assassinato no Expresso do Oriente', 'imagem_assassinato_no_expresso.jpg', 6, '1934-01-01', 'Um clássico de mistério e detetive.', 1, 1);
+

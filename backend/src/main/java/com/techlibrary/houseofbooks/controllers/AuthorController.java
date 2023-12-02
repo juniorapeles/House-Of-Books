@@ -13,6 +13,7 @@ import java.util.Optional;
 public class AuthorController {
     @Autowired
     private AuthorService service;
+
     @GetMapping
     public List<Author> getAllAuthors() {
         return service.getAllAuthors();

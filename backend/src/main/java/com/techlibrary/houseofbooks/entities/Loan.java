@@ -15,12 +15,12 @@ public class Loan {
     @JoinColumn(name = "book_id")
     private User user;
 
-    public Long getId() {
-        return id;
+    public Loan() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Loan(Book book, User user) {
+        this.book = book;
+        this.user = user;
     }
 
     public Book getBook() {
@@ -38,4 +38,6 @@ public class Loan {
     public void setUser(User user) {
         this.user = user;
     }
+
+
 }
