@@ -1,13 +1,9 @@
-package com.techlibrary.houseofbooks.entities;
+package com.techlibrary.houseofbooks.dto;
 
-import com.techlibrary.houseofbooks.dto.AddressDTO;
-import jakarta.persistence.*;
+import com.techlibrary.houseofbooks.entities.Address;
 
-@Entity
-@Table(name = "tb_address")
-public class Address {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class AddressDTO {
+
     private Long id;
 
     private String street;
@@ -16,10 +12,20 @@ public class Address {
     private String postalCode;
     private String country;
 
-    public Address() {
+    public AddressDTO() {
     }
 
-    public Address(String street, String city, String state, String postalCode, String country) {
+    public AddressDTO(Address add) {
+        this.id = add.getId();
+        this.street = add.getStreet();
+        this.city = add.getCity();
+        this.state = add.getState();    
+        this.postalCode = add.getPostalCode();
+        this.country = add.getCountry();
+    }
+
+    public AddressDTO(Long id, String street, String city, String state, String postalCode, String country) {
+        this.id = id;
         this.street = street;
         this.city = city;
         this.state = state;
@@ -27,15 +33,6 @@ public class Address {
         this.country = country;
     }
 
-    public Address(AddressDTO dto) {
-        this.street = dto.getStreet();
-        this.city = dto.getCity();
-        this.state = dto.getState();
-        this.postalCode = dto.getPostalCode();
-        this.country = dto.getCountry();
-    }
-
-    // Getters e Setters para todos os campos:
     public Long getId() {
         return id;
     }

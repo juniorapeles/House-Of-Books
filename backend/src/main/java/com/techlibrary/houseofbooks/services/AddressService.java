@@ -1,5 +1,6 @@
 package com.techlibrary.houseofbooks.services;
 
+import com.techlibrary.houseofbooks.dto.AddressDTO;
 import com.techlibrary.houseofbooks.entities.Address;
 import com.techlibrary.houseofbooks.repositories.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +17,33 @@ public class AddressService {
     public List<Address> getAllAddress() {
         return repository.findAll();
     }
-    public Optional<Address> getAdressById(Long id) {
-        return repository.findById(id);
+
+    public AddressDTO getAdressById(Long id) {
+        Optional<Address> addressOptional = repository.findById(id);
+
+        if(addressOptional.isPresent()){
+            Address address = addressOptional.get();
+            AddressDTO dto = new AddressDTO(address) ;
+            return dto;
+        }else{
+            return null;
+        }
     }
 
-    public Address CreateAddress(Address address) {
-        return repository.save(address);
+    public AddressDTO createAddress(AddressDTO addressDTO) {
+        Address add = new Address(addressDTO);
+        repository.save(add);
+        return new AddressDTO(add);
+   }
+
+    private Address convertToAddresEntity(AddressDTO addressDTO){
+        return new Address(addressDTO);
     }
+
+    private AddressDTO convertToAddressDTO(Address address){
+        return new AddressDTO(address);
+    }
+
 
     public void deleteAddress(Long id) {
         repository.deleteById(id);
