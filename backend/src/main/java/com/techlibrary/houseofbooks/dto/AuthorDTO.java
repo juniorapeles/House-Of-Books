@@ -1,28 +1,21 @@
-package com.techlibrary.houseofbooks.entities;
+package com.techlibrary.houseofbooks.dto;
 
-import com.techlibrary.houseofbooks.dto.AuthorDTO;
+import com.techlibrary.houseofbooks.entities.Author;
 import jakarta.persistence.*;
 
-@Entity
-@Table(name = "tb_author")
-public class Author {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class AuthorDTO {
     private Long id;
     private String name;
-    @Column(columnDefinition = "TEXT")
     private String biography;
 
-    public Author() {
+    public AuthorDTO() {
     }
-
-    public Author(AuthorDTO authorDTO) {
-        this.id = authorDTO.getId();
-        this.name = authorDTO.getName();
-        this.biography = authorDTO.getBiography();
+    public AuthorDTO(Author author) {
+        this.id = author.getId();
+        this.name = author.getName();
+        this.biography = author.getBiography();
     }
-
-    public Author(Long id, String name, String biography) {
+    public AuthorDTO(Long id, String name, String biography) {
         this.id = id;
         this.name = name;
         this.biography = biography;
@@ -51,5 +44,4 @@ public class Author {
     public void setBiography(String biography) {
         this.biography = biography;
     }
-
 }

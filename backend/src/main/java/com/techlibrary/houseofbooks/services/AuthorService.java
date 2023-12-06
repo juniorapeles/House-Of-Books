@@ -1,5 +1,6 @@
 package com.techlibrary.houseofbooks.services;
 
+import com.techlibrary.houseofbooks.dto.AuthorDTO;
 import com.techlibrary.houseofbooks.entities.Author;
 import com.techlibrary.houseofbooks.repositories.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +18,25 @@ public class AuthorService {
         return repository.findAll();
     }
 
-    public Author createAuthor(Author author) {
-        return repository.save(author);
+    public AuthorDTO createAuthor(AuthorDTO authorDTO) {
+       Author author = new Author(authorDTO);
+       repository.save(author);
+       return new AuthorDTO(author);
     }
 
-    public Optional<Author> getAuthorById(Long id) {
-        return repository.findById(id);
+    public AuthorDTO getAuthorById(Long id) {
+        Optional<Author> authorOptional =  repository.findById(id);
+
+        if(authorOptional.isPresent()) {
+
+            Author author = authorOptional.get();
+
+            return new AuthorDTO(author);
+        }else{
+            return null;
+        }
     }
+
 
     public void deleteAuthor(Long id) {
         repository.deleteById(id);

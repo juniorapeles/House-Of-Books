@@ -18,7 +18,7 @@ import java.util.Optional;
 public class AddressController {
     @Autowired
     private AddressService service;
-    @GetMapping
+    @GetMapping//fazer o padrão DTO
     public List<Address> getAllAddress() {
         return service.getAllAddress();
     }

@@ -1,5 +1,6 @@
 package com.techlibrary.houseofbooks.services;
 
+import com.techlibrary.houseofbooks.dto.CategorieDTO;
 import com.techlibrary.houseofbooks.entities.Categorie;
 import com.techlibrary.houseofbooks.repositories.CategorieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +19,21 @@ public class CategorieService {
         return repository.findAll();
     }
 
-    public Optional<Categorie> getCategorieById(Long id) {
-        return repository.findById(id);
+    public CategorieDTO getCategorieById(Long id) {
+        Optional<Categorie>  categorieOptional = repository.findById(id);
+
+        if(categorieOptional.isPresent()){
+            Categorie categorie = categorieOptional.get();
+            return  new CategorieDTO(categorie);
+        }else{
+            return null;
+        }
     }
 
-    public Categorie createCategorie(Categorie categorie) {
-        return repository.save(categorie);
+    public CategorieDTO createCategorie(CategorieDTO categorieDTO) {
+       Categorie cat = new Categorie(categorieDTO);
+       repository.save(cat);
+       return new CategorieDTO(cat);
     }
 
     public void deleteCategorie(Long id) {

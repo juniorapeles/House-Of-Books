@@ -1,5 +1,6 @@
 package com.techlibrary.houseofbooks.services;
 
+import com.techlibrary.houseofbooks.dto.LoanDTO;
 import com.techlibrary.houseofbooks.entities.Book;
 import com.techlibrary.houseofbooks.entities.Loan;
 import com.techlibrary.houseofbooks.entities.User;
@@ -7,6 +8,7 @@ import com.techlibrary.houseofbooks.repositories.BookRepository;
 import com.techlibrary.houseofbooks.repositories.LoanRepository;
 import com.techlibrary.houseofbooks.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +30,7 @@ public class LoanService {
         return repository.findAll();
     }
 
-    public Loan BorrowBook(Long bookId, Long userId) {
+    public LoanDTO BorrowBook(Long bookId, Long userId) {
         Optional<Book> bookOptional = bookRepository.findById(bookId);
         Optional<User> userOptional = userRepository.findById(userId);
 
@@ -37,8 +39,20 @@ public class LoanService {
             User user = userOptional.get();
 
             Loan loan = new Loan(book,user);
+            repository.save(loan);
 
-            return repository.save(loan);
+            return new LoanDTO(loan);
+        }else{
+            return null;
+        }
+    }
+
+    public LoanDTO GetBorrowBookById(Long id) {
+        Optional<Loan> loanOptional = repository.findById(id);
+
+        if(loanOptional.isPresent()){
+            Loan loan = loanOptional.get();
+            return new LoanDTO(loan);
         }else{
             return null;
         }

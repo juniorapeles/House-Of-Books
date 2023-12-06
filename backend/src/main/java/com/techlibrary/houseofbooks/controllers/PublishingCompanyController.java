@@ -1,8 +1,11 @@
 package com.techlibrary.houseofbooks.controllers;
 
+import com.techlibrary.houseofbooks.dto.PublishingCompanyDTO;
 import com.techlibrary.houseofbooks.entities.PublishingCompany;
 import com.techlibrary.houseofbooks.services.ServicePublishingCompany;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,13 +22,20 @@ public class PublishingCompanyController {
     }
 
     @GetMapping("/{id}")
-    public Optional<PublishingCompany> getPublishingCompanyById(@PathVariable Long id) {
-        return service.getPublishingCompanyById(id);
+    public ResponseEntity<PublishingCompanyDTO> getPublishingCompanyById(@PathVariable Long id) {
+        PublishingCompanyDTO publishingCompanyDTO = service.getAllPublishinggetPublishingCompanyByIdCompany(id);
+        if(publishingCompanyDTO != null){
+            return ResponseEntity.ok(publishingCompanyDTO);
+        }else{
+            return ResponseEntity.notFound().build();
+
+        }
     }
 
     @PostMapping
-    public PublishingCompany createPublishingCompany(@RequestBody PublishingCompany publishingCompany) {
-        return service.createPublishingCompany(publishingCompany);
+    public ResponseEntity<PublishingCompanyDTO> createPublishingCompany(@RequestBody PublishingCompanyDTO publishingCompanyDTO) {
+        PublishingCompanyDTO createPublishingCompany = service.createPublishingCompany(publishingCompanyDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createPublishingCompany);
     }
 
 //    @PutMapping("/{id}")

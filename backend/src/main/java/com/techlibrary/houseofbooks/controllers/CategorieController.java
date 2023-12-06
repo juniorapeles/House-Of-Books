@@ -1,10 +1,13 @@
 package com.techlibrary.houseofbooks.controllers;
 
+import com.techlibrary.houseofbooks.dto.CategorieDTO;
 import com.techlibrary.houseofbooks.entities.Author;
 import com.techlibrary.houseofbooks.entities.Categorie;
 import com.techlibrary.houseofbooks.services.AuthorService;
 import com.techlibrary.houseofbooks.services.CategorieService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,13 +24,20 @@ public class CategorieController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Categorie> getCategorieById(@PathVariable Long id) {
-        return service.getCategorieById(id);
+    public ResponseEntity<CategorieDTO> getCategorieById(@PathVariable Long id) {
+        CategorieDTO categorieDTO = service.getCategorieById(id);
+
+        if(categorieDTO != null ){
+            return ResponseEntity.ok(categorieDTO);
+        }else{
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping
-    public Categorie createCategorie(@RequestBody Categorie categorie) {
-        return service.createCategorie(categorie);
+    public ResponseEntity<CategorieDTO> createCategorie(@RequestBody CategorieDTO categorieDTO) {
+        CategorieDTO createCategorie = service.createCategorie(categorieDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createCategorie);
     }
 
 //    @PutMapping("/{id}")

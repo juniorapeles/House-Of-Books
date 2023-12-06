@@ -1,5 +1,6 @@
 package com.techlibrary.houseofbooks.services;
 
+import com.techlibrary.houseofbooks.dto.UserDTO;
 import com.techlibrary.houseofbooks.entities.User;
 import com.techlibrary.houseofbooks.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +18,21 @@ public class UserService {
         return repository.findAll();
     }
 
-    public Optional<User> getAUserById(Long id) {
-        return repository.findById(id);
+    public UserDTO getAUserById(Long id) {
+        Optional<User> userOptional = repository.findById(id);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            return new UserDTO(user);
+        } else {
+            return null;
+        }
     }
 
-    public User CreateUser(User user){
-        return repository.save(user);
+    public UserDTO CreateUser(UserDTO userDTO) {
+        User user = new User(userDTO);
+        repository.save(user);
+        return new UserDTO(user);
     }
 
 

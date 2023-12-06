@@ -1,5 +1,6 @@
 package com.techlibrary.houseofbooks.services;
 
+import com.techlibrary.houseofbooks.dto.BookDTO;
 import com.techlibrary.houseofbooks.entities.Book;
 import com.techlibrary.houseofbooks.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +20,21 @@ public class BookService {
         return repository.findAll();
     }
 
-    public Optional<Book> findById(Long id) {
-        return repository.findById(id);
+    public BookDTO getBookById(Long id) {
+
+        Optional <Book> bookOptional = repository.findById(id);
+        if(bookOptional.isPresent()){
+            Book book = bookOptional.get();
+            return new BookDTO(book);
+        }else{
+            return null;
+        }
     }
 
-    public Book CreateBook(Book book) {
-        return repository.save(book);
+    public BookDTO CreateBook(BookDTO bookDTO) {
+        Book book = new Book(bookDTO);
+        repository.save(book);
+        return new BookDTO(book);
     }
 
     public void DeleteBook(Long id){

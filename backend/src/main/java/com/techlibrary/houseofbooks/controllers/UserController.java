@@ -1,9 +1,12 @@
 package com.techlibrary.houseofbooks.controllers;
 
+import com.techlibrary.houseofbooks.dto.UserDTO;
 import com.techlibrary.houseofbooks.entities.Author;
 import com.techlibrary.houseofbooks.entities.User;
 import com.techlibrary.houseofbooks.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,13 +23,19 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public Optional<User> getUserById(@PathVariable Long id) {
-        return service.getAUserById(id);
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
+        UserDTO userDTO = service.getAUserById(id);
+        if(userDTO != null){
+            return ResponseEntity.ok(userDTO);
+        }else{
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping
-    public User CreateUser(@RequestBody User user) {
-        return service.CreateUser(user);
+    public ResponseEntity<UserDTO> CreateUser(@RequestBody UserDTO userDTO) {
+        UserDTO createUser = service.CreateUser(userDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createUser);
     }
 
 //    @PutMapping("/{id}")

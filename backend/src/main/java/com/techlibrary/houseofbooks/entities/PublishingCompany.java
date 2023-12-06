@@ -1,5 +1,6 @@
 package com.techlibrary.houseofbooks.entities;
 
+import com.techlibrary.houseofbooks.dto.PublishingCompanyDTO;
 import jakarta.persistence.*;
 
 @Entity
@@ -9,6 +10,17 @@ public class PublishingCompany {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+
+    public PublishingCompany() {
+    }
+    public PublishingCompany(PublishingCompanyDTO publishingCompanyDTO) {
+        this.id = publishingCompanyDTO.getId();
+        this.name = publishingCompanyDTO.getName();
+    }
+    public PublishingCompany(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     public Long getId() {
         return id;

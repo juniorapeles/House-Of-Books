@@ -1,36 +1,32 @@
-package com.techlibrary.houseofbooks.entities;
+package com.techlibrary.houseofbooks.dto;
 
-import com.techlibrary.houseofbooks.dto.UserDTO;
+import com.techlibrary.houseofbooks.entities.Address;
+import com.techlibrary.houseofbooks.entities.User;
 import jakarta.persistence.*;
 
-@Entity
-@Table(name = "tb_user")
-public class User {
+public class UserDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String Rg;
     private String email;
     private String telephone;
-    @OneToOne
-    @JoinColumn(name = "address_id")
+
     private Address address;
 
-    public User() {
+    public UserDTO() {
     }
 
-    public User(UserDTO userDTO) {
-        this.id = userDTO.getId();
-        this.name = userDTO.getName();
-        Rg = userDTO.getRg();
-        this.email = userDTO.getEmail();
-        this.telephone = userDTO.getTelephone();
-        this.address = userDTO.getAddress();
+    public UserDTO(User user) {
+        this.id = user.getId();
+        this.name = user.getName();
+        Rg = user.getRg();
+        this.email = user.getEmail();
+        this.telephone = user.getTelephone();
+        this.address = user.getAddress();
     }
 
-    public User(Long id, String name, String rg, String email, String telephone, Address address) {
+    public UserDTO(Long id, String name, String rg, String email, String telephone, Address address) {
         this.id = id;
         this.name = name;
         Rg = rg;

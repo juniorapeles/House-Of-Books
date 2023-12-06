@@ -1,28 +1,23 @@
-package com.techlibrary.houseofbooks.entities;
+package com.techlibrary.houseofbooks.dto;
 
-import com.techlibrary.houseofbooks.dto.CategorieDTO;
+import com.techlibrary.houseofbooks.entities.Categorie;
 import jakarta.persistence.*;
 
-@Entity
-@Table(name = "tb_categories")
-public class Categorie {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+public class CategorieDTO {
     private Long id;
     private String name;
-    @Column(columnDefinition = "TEXT")
+
     private String deascription;
 
-    public Categorie() {
+    public CategorieDTO() {
     }
-
-    public Categorie(CategorieDTO categorieDTO) {
-        this.id = categorieDTO.getId();
-        this.name = categorieDTO.getName();
-        this.deascription = categorieDTO.getDeascription();
+    public CategorieDTO(Categorie categorie) {
+        this.id = categorie.getId();
+        this.name = categorie.getName();
+        this.deascription = categorie.getDeascription();
     }
-
-    public Categorie(Long id, String name, String deascription) {
+    public CategorieDTO(Long id, String name, String deascription) {
         this.id = id;
         this.name = name;
         this.deascription = deascription;

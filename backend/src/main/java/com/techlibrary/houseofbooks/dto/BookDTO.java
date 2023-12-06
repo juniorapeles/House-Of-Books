@@ -1,46 +1,42 @@
-package com.techlibrary.houseofbooks.entities;
+package com.techlibrary.houseofbooks.dto;
 
-import com.techlibrary.houseofbooks.dto.BookDTO;
+import com.techlibrary.houseofbooks.entities.Author;
+import com.techlibrary.houseofbooks.entities.Book;
+import com.techlibrary.houseofbooks.entities.Categorie;
+import com.techlibrary.houseofbooks.entities.PublishingCompany;
 import jakarta.persistence.*;
 
 import java.util.Date;
 
-@Entity
-@Table(name = "tb_book")
-public class Book {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+public class BookDTO {
+
     private Long id;
     private String name;
     private String imgPath;
-    @ManyToOne
-    @JoinColumn(name = "author_id")
+
     private Author author;
-    @Temporal(TemporalType.DATE)
+
     private Date publication_date;
-    @Column(columnDefinition = "TEXT")
+
     private String description;
-    @ManyToOne
-    @JoinColumn(name = "categorie_id")
+
     private Categorie categorie;
-    @ManyToOne
-    @JoinColumn(name = "publishingCompany_id")
-    private PublishingCompany publishingCompany;
 
-    public Book() {
+    public BookDTO() {
     }
-    public Book(BookDTO bookDTO) {
-        this.id = bookDTO.getId();
-        this.name = bookDTO.getName();
-        this.imgPath = bookDTO.getImgPath();
-        this.author = bookDTO.getAuthor();
-        this.publication_date = bookDTO.getPublication_date();
-        this.description = bookDTO.getDescription();
-        this.categorie = bookDTO.getCategorie();
-        this.publishingCompany = bookDTO.getPublishingCompany();
+    public BookDTO(Book Book) {
+        this.id = Book.getId();
+        this.name = Book.getName();
+        this.imgPath = Book.getImgPath();
+        this.author = Book.getAuthor();
+        this.publication_date = Book.getPublication_date();
+        this.description = Book.getDescription();
+        this.categorie = Book.getCategorie();
+        this.publishingCompany = Book.getPublishingCompany();
     }
 
-    public Book(Long id, String name, String imgPath, Author author, Date publication_date, String description, Categorie categorie, PublishingCompany publishingCompany) {
+    public BookDTO(Long id, String name, String imgPath, Author author, Date publication_date, String description, Categorie categorie, PublishingCompany publishingCompany) {
         this.id = id;
         this.name = name;
         this.imgPath = imgPath;
@@ -50,6 +46,8 @@ public class Book {
         this.categorie = categorie;
         this.publishingCompany = publishingCompany;
     }
+
+    private PublishingCompany publishingCompany;
 
     public Long getId() {
         return id;
