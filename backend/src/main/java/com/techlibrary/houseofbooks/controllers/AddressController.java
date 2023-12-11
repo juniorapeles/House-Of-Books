@@ -22,7 +22,6 @@ public class AddressController {
     public List<Address> getAllAddress() {
         return service.getAllAddress();
     }
-
     @GetMapping("/{id}")
     public ResponseEntity<AddressDTO> getAddressById(@PathVariable Long id){
         AddressDTO addressDTO = service.getAdressById(id);
@@ -33,7 +32,6 @@ public class AddressController {
             return ResponseEntity.notFound().build();
         }
     }
-
     @PostMapping
     public ResponseEntity<AddressDTO>createAddress(@RequestBody AddressDTO addressDTO) {
         AddressDTO createdAddress = service.createAddress(addressDTO);

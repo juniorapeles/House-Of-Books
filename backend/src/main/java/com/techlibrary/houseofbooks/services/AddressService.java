@@ -3,8 +3,10 @@ package com.techlibrary.houseofbooks.services;
 import com.techlibrary.houseofbooks.dto.AddressDTO;
 import com.techlibrary.houseofbooks.entities.Address;
 import com.techlibrary.houseofbooks.repositories.AddressRepository;
+import com.techlibrary.houseofbooks.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,20 +16,16 @@ public class AddressService {
     @Autowired
     private AddressRepository repository;
 
+    @Transactional(readOnly = true)
     public List<Address> getAllAddress() {
         return repository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public AddressDTO getAdressById(Long id) {
-        Optional<Address> addressOptional = repository.findById(id);
-
-        if(addressOptional.isPresent()){
-            Address address = addressOptional.get();
-            AddressDTO dto = new AddressDTO(address) ;
-            return dto;
-        }else{
-            return null;
-        }
+        Optional<Address> obj = repository.findById(id);
+        Address entity = obj.orElseThrow(() -> new ResourceNotFoundException("Address not Found"));
+        return new AddressDTO(entity) ;
     }
 
     public AddressDTO createAddress(AddressDTO addressDTO) {

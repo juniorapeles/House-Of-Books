@@ -3,6 +3,7 @@ package com.techlibrary.houseofbooks.services;
 import com.techlibrary.houseofbooks.dto.AuthorDTO;
 import com.techlibrary.houseofbooks.entities.Author;
 import com.techlibrary.houseofbooks.repositories.AuthorRepository;
+import com.techlibrary.houseofbooks.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,15 +27,8 @@ public class AuthorService {
 
     public AuthorDTO getAuthorById(Long id) {
         Optional<Author> authorOptional =  repository.findById(id);
-
-        if(authorOptional.isPresent()) {
-
-            Author author = authorOptional.get();
-
-            return new AuthorDTO(author);
-        }else{
-            return null;
-        }
+        Author entity = authorOptional.orElseThrow(() -> new ResourceNotFoundException("Author not Found"));
+        return new AuthorDTO(entity);
     }
 
 

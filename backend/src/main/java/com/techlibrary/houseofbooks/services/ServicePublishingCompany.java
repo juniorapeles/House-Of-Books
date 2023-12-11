@@ -1,9 +1,9 @@
 package com.techlibrary.houseofbooks.services;
 
 import com.techlibrary.houseofbooks.dto.PublishingCompanyDTO;
-import com.techlibrary.houseofbooks.entities.Categorie;
 import com.techlibrary.houseofbooks.entities.PublishingCompany;
 import com.techlibrary.houseofbooks.repositories.RepositoryPublishingCompany;
+import com.techlibrary.houseofbooks.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +23,8 @@ public class ServicePublishingCompany {
     public PublishingCompanyDTO getAllPublishinggetPublishingCompanyByIdCompany (Long id) {
         Optional<PublishingCompany>  publishingCompanyDTO = repository.findById(id);
 
-        if(publishingCompanyDTO.isPresent()){
-            PublishingCompany publishingCompany = publishingCompanyDTO.get();
-            return new PublishingCompanyDTO(publishingCompany);
-        }else{
-            return null;
-        }
+        PublishingCompany entity = publishingCompanyDTO.orElseThrow(() -> new ResourceNotFoundException("Publishing Company Not Found"));
+        return new PublishingCompanyDTO(entity);
     }
 
     public PublishingCompanyDTO createPublishingCompany(PublishingCompanyDTO publishingCompanyDTO) {

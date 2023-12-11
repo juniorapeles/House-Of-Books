@@ -3,6 +3,7 @@ package com.techlibrary.houseofbooks.services;
 import com.techlibrary.houseofbooks.dto.BookDTO;
 import com.techlibrary.houseofbooks.entities.Book;
 import com.techlibrary.houseofbooks.repositories.BookRepository;
+import com.techlibrary.houseofbooks.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,14 +22,10 @@ public class BookService {
     }
 
     public BookDTO getBookById(Long id) {
-
         Optional <Book> bookOptional = repository.findById(id);
-        if(bookOptional.isPresent()){
-            Book book = bookOptional.get();
-            return new BookDTO(book);
-        }else{
-            return null;
-        }
+
+        Book entity = bookOptional.orElseThrow(() -> new ResourceNotFoundException("Book not Found"));
+        return new BookDTO(entity);
     }
 
     public BookDTO CreateBook(BookDTO bookDTO) {
