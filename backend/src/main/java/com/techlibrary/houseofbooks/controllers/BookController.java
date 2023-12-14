@@ -43,6 +43,11 @@ public class BookController {
         BookDTO createdBook = service.CreateBook(bookDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdBook);
     }
+    @PutMapping("/{id}")
+    public ResponseEntity<BookDTO> UpdateBook( @RequestBody BookDTO bookDTO, @PathVariable Long id) {
+        BookDTO updatedBook = service.UpdateBook(id, bookDTO);
+        return ResponseEntity.ok().body(updatedBook);
+    }
 
     @DeleteMapping("/{id}")
     public void DeleteBook(@PathVariable Long id){
