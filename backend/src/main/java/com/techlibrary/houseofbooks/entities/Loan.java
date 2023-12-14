@@ -2,6 +2,7 @@ package com.techlibrary.houseofbooks.entities;
 
 import com.techlibrary.houseofbooks.dto.LoanDTO;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tb_loan")
@@ -10,10 +11,12 @@ public class Loan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "book_id")
+    @NotNull(message = "the 'book' field cannot be null")
     private Book book;
     @OneToOne
-    @JoinColumn(name = "book_id")
+    @JoinColumn(name = "user_id")
+    @NotNull(message = "the 'user' field cannot be null")
     private User user;
 
     public Loan() {

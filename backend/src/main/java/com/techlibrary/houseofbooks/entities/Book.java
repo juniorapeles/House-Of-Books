@@ -2,6 +2,8 @@ package com.techlibrary.houseofbooks.entities;
 
 import com.techlibrary.houseofbooks.dto.BookDTO;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
 
@@ -11,20 +13,27 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "the 'name' field cannot be blank")
     private String name;
+    @NotBlank(message = "the 'imgPath' field cannot be blank")
     private String imgPath;
     @ManyToOne
     @JoinColumn(name = "author_id")
+    @NotNull(message = "The 'author'  field cannot be null")
     private Author author;
     @Temporal(TemporalType.DATE)
+    @NotNull(message = "the 'publication_date' field cannot be null")
     private Date publication_date;
     @Column(columnDefinition = "TEXT")
+    @NotBlank(message = "the 'description' field cannot be blank")
     private String description;
     @ManyToOne
     @JoinColumn(name = "categorie_id")
+    @NotNull(message = "the 'categorie' field cannot be null")
     private Categorie categorie;
     @ManyToOne
     @JoinColumn(name = "publishingCompany_id")
+    @NotNull(message = "the 'publishingCompany' field cannot be null")
     private PublishingCompany publishingCompany;
 
     public Book() {

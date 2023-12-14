@@ -2,6 +2,7 @@ package com.techlibrary.houseofbooks.entities;
 
 import com.techlibrary.houseofbooks.dto.AuthorDTO;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "tb_author")
@@ -9,8 +10,10 @@ public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "the 'name' field cannot be blank")
     private String name;
     @Column(columnDefinition = "TEXT")
+    @NotBlank(message = "the 'message' field cannot be blank")
     private String biography;
 
     public Author() {

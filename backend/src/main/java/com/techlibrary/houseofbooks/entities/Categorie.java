@@ -2,6 +2,7 @@ package com.techlibrary.houseofbooks.entities;
 
 import com.techlibrary.houseofbooks.dto.CategorieDTO;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "tb_categories")
@@ -9,9 +10,11 @@ public class Categorie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "the 'name' field cannot be blank")
     private String name;
     @Column(columnDefinition = "TEXT")
-    private String deascription;
+    @NotBlank(message = "the 'description' field cannot be blank")
+    private String description;
 
     public Categorie() {
     }
@@ -19,13 +22,13 @@ public class Categorie {
     public Categorie(CategorieDTO categorieDTO) {
         this.id = categorieDTO.getId();
         this.name = categorieDTO.getName();
-        this.deascription = categorieDTO.getDeascription();
+        this.description = categorieDTO.getDeascription();
     }
 
     public Categorie(Long id, String name, String deascription) {
         this.id = id;
         this.name = name;
-        this.deascription = deascription;
+        this.description = deascription;
     }
 
     public Long getId() {
@@ -44,11 +47,11 @@ public class Categorie {
         this.name = name;
     }
 
-    public String getDeascription() {
-        return deascription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDeascription(String deascription) {
-        this.deascription = deascription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

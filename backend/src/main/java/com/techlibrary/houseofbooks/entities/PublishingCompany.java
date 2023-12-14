@@ -2,6 +2,8 @@ package com.techlibrary.houseofbooks.entities;
 
 import com.techlibrary.houseofbooks.dto.PublishingCompanyDTO;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tb_PublishingCompany")
@@ -9,6 +11,8 @@ public class PublishingCompany {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank(message = "the 'name' field cannot be blank")
     private String name;
 
     public PublishingCompany() {

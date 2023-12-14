@@ -1,7 +1,6 @@
 package com.techlibrary.houseofbooks.dto;
 
 import com.techlibrary.houseofbooks.entities.Categorie;
-import jakarta.persistence.*;
 
 
 public class CategorieDTO {
@@ -15,7 +14,7 @@ public class CategorieDTO {
     public CategorieDTO(Categorie categorie) {
         this.id = categorie.getId();
         this.name = categorie.getName();
-        this.deascription = categorie.getDeascription();
+        this.deascription = categorie.getDescription();
     }
     public CategorieDTO(Long id, String name, String deascription) {
         this.id = id;

@@ -2,6 +2,8 @@ package com.techlibrary.houseofbooks.entities;
 
 import com.techlibrary.houseofbooks.dto.AddressDTO;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import org.hibernate.validator.constraints.Length;
 
 @Entity
 @Table(name = "tb_address")
@@ -9,11 +11,16 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @NotBlank(message = "the 'street' field cannot be blank")
     private String street;
+    @NotBlank(message = "the 'city' field cannot be blank")
     private String city;
+    @NotBlank(message = "the 'state' field cannot be blank")
     private String state;
+    @NotBlank(message = "the 'postal code' field cannot be blank")
+    @Length(min = 5, max = 10, message = "the postal code must be between 5 and 10 characters")
     private String postalCode;
+    @NotBlank(message = "the 'postal code' field cannot be blank")
     private String country;
 
     public Address() {
