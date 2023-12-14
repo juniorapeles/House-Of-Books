@@ -16,6 +16,8 @@ A api possui alguns métodos como
 ## Funções:
 
 * Empréstimos de livros.
+* Devolução de livros.
+* Busca de livros.
 
 
 
