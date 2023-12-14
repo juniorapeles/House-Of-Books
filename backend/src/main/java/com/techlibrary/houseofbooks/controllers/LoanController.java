@@ -20,25 +20,33 @@ public class LoanController {
     private LoanService service;
 
     @GetMapping
-    public List<Loan>GetAllBorrowBooks() {
-            return service.GetAllBorrowBooks();
+    public List<Loan> GetAllBorrowBooks() {
+        return service.GetAllBorrowBooks();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<LoanDTO>GetBorrowBooksById(@PathVariable Long id) {
+    public ResponseEntity<LoanDTO> GetBorrowBooksById(@PathVariable Long id) {
         LoanDTO loanDTO = service.GetBorrowBookById(id);
 
-        if(loanDTO != null){
+        if (loanDTO != null) {
             return ResponseEntity.ok(loanDTO);
-        }else{
+        } else {
             return ResponseEntity.notFound().build();
         }
     }
+
     @PostMapping
-    public ResponseEntity<LoanDTO> borrowBook(@RequestBody LoanRequest loan) {
+    public ResponseEntity<LoanDTO> BorrowBook(@RequestBody LoanRequest loan) {
         Long bookId = loan.getIdBook();
         Long userId = loan.getIdUser();
         LoanDTO loanCreated = service.BorrowBook(bookId, userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(loanCreated);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<LoanDTO> returnBook(@PathVariable Long idLoan) {
+        LoanDTO loanUpdated = service.returnBook(idLoan);
+        return ResponseEntity.status(HttpStatus.OK).body(loanUpdated);
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.techlibrary.houseofbooks.controllers.exceptions;
 
+import com.techlibrary.houseofbooks.services.exceptions.BookBorrowedException;
 import com.techlibrary.houseofbooks.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,17 @@ public class ResourceExceptionHandler {
         err.setTimestamp(Instant.now());
         err.setStatus(status.value());
         err.setError("Resource not Found");
+        err.setMessage(e.getMessage());
+        err.setPath(request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
+    }
+    @ExceptionHandler(BookBorrowedException.class)
+    public ResponseEntity<StandardError> bookBorrowed(BookBorrowedException e, HttpServletRequest request){
+        HttpStatus status = HttpStatus.FOUND;
+        StandardError err = new StandardError();
+        err.setTimestamp(Instant.now());
+        err.setStatus(status.value());
+        err.setError("Book Borrowed");
         err.setMessage(e.getMessage());
         err.setPath(request.getRequestURI());
         return ResponseEntity.status(status).body(err);

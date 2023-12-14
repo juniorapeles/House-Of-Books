@@ -3,7 +3,6 @@ package com.techlibrary.houseofbooks.dto;
 import com.techlibrary.houseofbooks.entities.Book;
 import com.techlibrary.houseofbooks.entities.Loan;
 import com.techlibrary.houseofbooks.entities.User;
-import jakarta.persistence.*;
 
 
 public class LoanDTO {
@@ -13,11 +12,13 @@ public class LoanDTO {
 
     public LoanDTO() {
     }
+
     public LoanDTO(Loan loan) {
         this.id = loan.getId();
         this.book = loan.getBook();
         this.user = loan.getUser();
     }
+
     public LoanDTO(Book book, User user) {
         this.book = book;
         this.user = user;

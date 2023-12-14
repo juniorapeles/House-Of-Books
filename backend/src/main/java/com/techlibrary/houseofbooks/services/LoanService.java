@@ -7,9 +7,9 @@ import com.techlibrary.houseofbooks.entities.User;
 import com.techlibrary.houseofbooks.repositories.BookRepository;
 import com.techlibrary.houseofbooks.repositories.LoanRepository;
 import com.techlibrary.houseofbooks.repositories.UserRepository;
+import com.techlibrary.houseofbooks.services.exceptions.BookBorrowedException;
 import com.techlibrary.houseofbooks.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,17 +38,29 @@ public class LoanService {
         Book bookEntity = bookOptional.orElseThrow(() -> new ResourceNotFoundException("Book not found"));
         User userEntity = userOptional.orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        Loan loan = new Loan(bookEntity, userEntity);
-        repository.save(loan);
+        Optional<Loan> loanOptional = repository.findById(bookEntity.getId());
 
-        return new LoanDTO(loan) ;
+        if (loanOptional.isPresent()) {
+            throw new BookBorrowedException("O livro "+ bookEntity.getName() + " já está emprestado");
+        } else {
+            Loan loan = new Loan(bookEntity, userEntity);
+            repository.save(loan);
+            return new LoanDTO(loan);
+        }
     }
 
     public LoanDTO GetBorrowBookById(Long id) {
         Optional<Loan> loanOptional = repository.findById(id);
 
-        Loan entity  = loanOptional.orElseThrow(()  -> new ResourceNotFoundException("Loan Not Found"));
+        Loan entity = loanOptional.orElseThrow(() -> new ResourceNotFoundException("Loan Not Found"));
         return new LoanDTO(entity);
 
+    }
+
+    public LoanDTO returnBook(Long idLoan) {
+        Optional<Loan> obj = repository.findById(idLoan);
+        Loan entity = obj.orElseThrow(() -> new ResourceNotFoundException("Loan not Found"));
+        repository.deleteById(entity.getId());
+        return null;
     }
 }

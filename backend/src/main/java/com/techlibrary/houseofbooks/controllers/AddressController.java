@@ -38,10 +38,11 @@ public class AddressController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdAddress);
     }
 
-//    @PutMapping("/{id}")
-//    public Author updateAuthor(@PathVariable Long id, @RequestBody Author author) {
-//        return authorService.updateAuthor(id, author);
-//    }
+    @PutMapping("/{id}")
+    public ResponseEntity<AddressDTO> updateAuthor(@PathVariable Long id, @RequestBody AddressDTO addressDTO) {
+        AddressDTO updatedAddress = service.updateAuthor(id,addressDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedAddress);
+    }
 
     @DeleteMapping("/{id}")
     public void deleteAddress(@PathVariable Long id) {

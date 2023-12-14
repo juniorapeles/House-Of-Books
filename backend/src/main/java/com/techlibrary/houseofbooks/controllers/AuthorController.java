@@ -39,10 +39,11 @@ public class AuthorController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createAuthor);
     }
 
-//    @PutMapping("/{id}")
-//    public Author updateAuthor(@PathVariable Long id, @RequestBody Author author) {
-//        return authorService.updateAuthor(id, author);
-//    }
+    @PutMapping("/{id}")
+    public ResponseEntity<AuthorDTO> updateAuthorDTO(@PathVariable Long id, @RequestBody AuthorDTO authorDTO) {
+        AuthorDTO updatedAuthor =  service.updateAuthor(id,authorDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedAuthor);
+    }
 
     @DeleteMapping("/{id}")
     public void deleteAuthor(@PathVariable Long id) {

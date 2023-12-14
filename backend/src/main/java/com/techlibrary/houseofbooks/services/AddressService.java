@@ -43,6 +43,19 @@ public class AddressService {
     }
 
 
+    public AddressDTO updateAuthor(Long id, AddressDTO addressDTO) {
+        Optional<Address> oldObj = repository.findById(id);
+        Address entity = oldObj.orElseThrow(() -> new ResourceNotFoundException("Address not Found"));
+
+        entity.setStreet(addressDTO.getStreet());
+        entity.setCity(addressDTO.getCity());
+        entity.setState(addressDTO.getState());
+        entity.setPostalCode(addressDTO.getPostalCode());
+        entity.setCountry(addressDTO.getCountry());
+        Address updatedAddress = repository.save(entity);
+        return new AddressDTO(updatedAddress);
+
+    }
     public void deleteAddress(Long id) {
         repository.deleteById(id);
     }
