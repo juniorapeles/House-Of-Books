@@ -22,8 +22,13 @@ public class BookController {
     private BookService service;
 
     @GetMapping
-    public List<Book> getAllBooks(){
+    public List<BookDTO> getAllBooks(){
         return service.getAllBooks();
+    }
+
+    @GetMapping("/available")
+    public List<BookDTO> getAvailableBooks(){
+        return service.getAvailableBooks();
     }
 
     @GetMapping("/{id}")
@@ -35,7 +40,6 @@ public class BookController {
         }else{
             return null;
         }
-
     }
 
     @PostMapping

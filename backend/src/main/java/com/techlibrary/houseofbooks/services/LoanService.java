@@ -43,6 +43,7 @@ public class LoanService {
         if (loanOptional.isPresent()) {
             throw new BookBorrowedException("O livro "+ bookEntity.getName() + " já está emprestado");
         } else {
+            bookEntity.setBorrowed(true);
             Loan loan = new Loan(bookEntity, userEntity);
             repository.save(loan);
             return new LoanDTO(loan);

@@ -13,6 +13,7 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Boolean borrowed;
     @NotBlank(message = "the 'name' field cannot be blank")
     private String name;
     @NotBlank(message = "the 'imgPath' field cannot be blank")
@@ -58,6 +59,14 @@ public class Book {
         this.description = description;
         this.categorie = categorie;
         this.publishingCompany = publishingCompany;
+    }
+
+    public Boolean getBorrowed() {
+        return borrowed;
+    }
+
+    public void setBorrowed(Boolean borrowed) {
+        this.borrowed = borrowed;
     }
 
     public Long getId() {

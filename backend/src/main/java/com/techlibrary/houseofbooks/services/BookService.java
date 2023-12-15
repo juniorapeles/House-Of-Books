@@ -8,8 +8,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class BookService {
@@ -19,8 +21,22 @@ public class BookService {
 
     @Autowired
     private ModelMapper modelMapper;
-    public List<Book> getAllBooks() {
-        return repository.findAll();
+
+    public List<BookDTO> getAllBooks() {
+        List<Book> allBooks = repository.findAll();
+
+        List<BookDTO> allBooksDTOs = allBooks.stream()
+                .map(BookDTO::new)
+                .collect(Collectors.toList());
+        return allBooksDTOs;
+    }
+
+    public List<BookDTO> getAvailableBooks() {
+        List<Book> availableBooks = repository.findByBorrowedFalse();
+
+        return availableBooks.stream()
+                .map(BookDTO::new)
+                .collect(Collectors.toList());
     }
 
     public BookDTO getBookById(Long id) {
@@ -48,4 +64,7 @@ public class BookService {
     public void DeleteBook(Long id) {
         repository.deleteById(id);
     }
+
+
+
 }
