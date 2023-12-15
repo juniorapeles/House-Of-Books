@@ -4,6 +4,7 @@ import com.techlibrary.houseofbooks.dto.AuthorDTO;
 import com.techlibrary.houseofbooks.entities.Author;
 import com.techlibrary.houseofbooks.repositories.AuthorRepository;
 import com.techlibrary.houseofbooks.services.exceptions.ResourceNotFoundException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,8 @@ import java.util.Optional;
 public class AuthorService {
     @Autowired
     private AuthorRepository repository;
+    @Autowired
+    private ModelMapper modelMapper;
 
     public List<Author> getAllAuthors() {
         return repository.findAll();
@@ -38,17 +41,11 @@ public class AuthorService {
 
     public AuthorDTO updateAuthor(Long id, AuthorDTO authorDTO) {
         Optional<Author> authorOptional = repository.findById(id);
-
         Author entity = authorOptional.orElseThrow(() -> new ResourceNotFoundException("Author not Found"));
-
-        entity.setName(authorDTO.getName());
-        entity.setBiography(authorDTO.getBiography());
-
-        Author updatedAuthor = repository.save(entity);
-
-        return new AuthorDTO(updatedAuthor);
-
-
+        modelMapper.getConfiguration().setSkipNullEnabled(true);
+        modelMapper.map(authorDTO,entity);
+        repository.save(entity);
+        return new AuthorDTO(entity);
     }
 }
 

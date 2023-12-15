@@ -38,10 +38,11 @@ public class PublishingCompanyController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createPublishingCompany);
     }
 
-//    @PutMapping("/{id}")
-//    public Author updateAuthor(@PathVariable Long id, @RequestBody Author author) {
-//        return service.updateAuthor(id, author);
-//    }
+    @PutMapping("/{id}")
+    public ResponseEntity<PublishingCompanyDTO> UpdatePublishingCompany(@PathVariable Long id, @RequestBody PublishingCompanyDTO publishingCompanyDTO) {
+        PublishingCompanyDTO updatedPublishingCompanyDTO = service.UpdatePublishingCompany(id,publishingCompanyDTO);
+        return ResponseEntity.ok().body(updatedPublishingCompanyDTO);
+    }
 
     @DeleteMapping("/{id}")
     public void DeletePublishingCompany(@PathVariable Long id) {

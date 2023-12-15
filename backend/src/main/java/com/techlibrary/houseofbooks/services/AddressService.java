@@ -1,9 +1,11 @@
 package com.techlibrary.houseofbooks.services;
 
 import com.techlibrary.houseofbooks.dto.AddressDTO;
+import com.techlibrary.houseofbooks.dto.BookDTO;
 import com.techlibrary.houseofbooks.entities.Address;
 import com.techlibrary.houseofbooks.repositories.AddressRepository;
 import com.techlibrary.houseofbooks.services.exceptions.ResourceNotFoundException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +17,8 @@ import java.util.Optional;
 public class AddressService {
     @Autowired
     private AddressRepository repository;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Transactional(readOnly = true)
     public List<Address> getAllAddress() {
@@ -47,13 +51,10 @@ public class AddressService {
         Optional<Address> oldObj = repository.findById(id);
         Address entity = oldObj.orElseThrow(() -> new ResourceNotFoundException("Address not Found"));
 
-        entity.setStreet(addressDTO.getStreet());
-        entity.setCity(addressDTO.getCity());
-        entity.setState(addressDTO.getState());
-        entity.setPostalCode(addressDTO.getPostalCode());
-        entity.setCountry(addressDTO.getCountry());
-        Address updatedAddress = repository.save(entity);
-        return new AddressDTO(updatedAddress);
+        modelMapper.getConfiguration().setSkipNullEnabled(true);
+        modelMapper.map(addressDTO,entity);
+        repository.save(entity);
+        return new AddressDTO(entity);
 
     }
     public void deleteAddress(Long id) {

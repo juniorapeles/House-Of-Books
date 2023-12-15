@@ -42,7 +42,7 @@ public class AuthorController {
     @PutMapping("/{id}")
     public ResponseEntity<AuthorDTO> updateAuthorDTO(@PathVariable Long id, @RequestBody AuthorDTO authorDTO) {
         AuthorDTO updatedAuthor =  service.updateAuthor(id,authorDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(updatedAuthor);
+        return ResponseEntity.ok().body(updatedAuthor);
     }
 
     @DeleteMapping("/{id}")

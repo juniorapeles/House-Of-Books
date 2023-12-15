@@ -1,5 +1,6 @@
 package com.techlibrary.houseofbooks.controllers;
 
+import com.techlibrary.houseofbooks.dto.AuthorDTO;
 import com.techlibrary.houseofbooks.dto.CategorieDTO;
 import com.techlibrary.houseofbooks.entities.Author;
 import com.techlibrary.houseofbooks.entities.Categorie;
@@ -40,10 +41,12 @@ public class CategorieController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createCategorie);
     }
 
-//    @PutMapping("/{id}")
-//    public Author updateAuthor(@PathVariable Long id, @RequestBody Author author) {
-//        return authorService.updateAuthor(id, author);
-//    }
+    @PutMapping("/{id}")
+    public ResponseEntity<CategorieDTO> updateAuthor(@PathVariable Long id, @RequestBody CategorieDTO categorieDTO) {
+        CategorieDTO updatedCategorie  = service.UpdateCategorie(id,categorieDTO);
+        return ResponseEntity.ok().body(updatedCategorie);
+
+    }
 
     @DeleteMapping("/{id}")
     public void deleteCategorie(@PathVariable Long id) {
