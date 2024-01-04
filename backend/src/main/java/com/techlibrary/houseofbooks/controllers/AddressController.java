@@ -5,12 +5,10 @@ import com.techlibrary.houseofbooks.entities.Address;
 import com.techlibrary.houseofbooks.services.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/Address")
@@ -18,7 +16,8 @@ import java.util.Optional;
 public class AddressController {
     @Autowired
     private AddressService service;
-    @GetMapping//fazer o padrão DTO
+
+    @GetMapping
     public List<Address> getAllAddress() {
         return service.getAllAddress();
     }

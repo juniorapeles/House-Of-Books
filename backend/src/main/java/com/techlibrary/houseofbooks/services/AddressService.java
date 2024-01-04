@@ -1,7 +1,6 @@
 package com.techlibrary.houseofbooks.services;
 
 import com.techlibrary.houseofbooks.dto.AddressDTO;
-import com.techlibrary.houseofbooks.dto.BookDTO;
 import com.techlibrary.houseofbooks.entities.Address;
 import com.techlibrary.houseofbooks.repositories.AddressRepository;
 import com.techlibrary.houseofbooks.services.exceptions.ResourceNotFoundException;
@@ -46,7 +45,6 @@ public class AddressService {
         return new AddressDTO(address);
     }
 
-
     public AddressDTO updateAuthor(Long id, AddressDTO addressDTO) {
         Optional<Address> oldObj = repository.findById(id);
         Address entity = oldObj.orElseThrow(() -> new ResourceNotFoundException("Address not Found"));
@@ -55,7 +53,6 @@ public class AddressService {
         modelMapper.map(addressDTO,entity);
         repository.save(entity);
         return new AddressDTO(entity);
-
     }
     public void deleteAddress(Long id) {
         repository.deleteById(id);
