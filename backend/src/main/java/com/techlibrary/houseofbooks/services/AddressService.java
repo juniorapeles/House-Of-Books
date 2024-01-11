@@ -45,7 +45,7 @@ public class AddressService {
         return new AddressDTO(address);
     }
 
-    public AddressDTO updateAuthor(Long id, AddressDTO addressDTO) {
+    public AddressDTO updateAddress(Long id, AddressDTO addressDTO) {
         Optional<Address> oldObj = repository.findById(id);
         Address entity = oldObj.orElseThrow(() -> new ResourceNotFoundException("Address not Found"));
 

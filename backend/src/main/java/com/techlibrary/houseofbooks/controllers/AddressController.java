@@ -38,8 +38,8 @@ public class AddressController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AddressDTO> updateAuthor(@PathVariable Long id, @RequestBody AddressDTO addressDTO) {
-        AddressDTO updatedAddress = service.updateAuthor(id,addressDTO);
+    public ResponseEntity<AddressDTO> updateAddress(@PathVariable Long id, @RequestBody AddressDTO addressDTO) {
+        AddressDTO updatedAddress = service.updateAddress(id,addressDTO);
         return ResponseEntity.status(HttpStatus.OK).body(updatedAddress);
     }
 
