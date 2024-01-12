@@ -1,7 +1,7 @@
 package com.techlibrary.houseofbooks.services;
 
 import com.techlibrary.houseofbooks.dto.AddressDTO;
-import com.techlibrary.houseofbooks.repositories.AddressRepository;
+import com.techlibrary.houseofbooks.repositories.CategorieRepository;
 import com.techlibrary.houseofbooks.services.exceptions.ResourceNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,24 +10,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.ResultActions;
-
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
-public class AddressServiceTest {
+public class CategorieServiceTest {
 
     @InjectMocks
-    private AddressService service;
+    private CategorieService service;
 
     @Mock
-    private AddressRepository addressRepository;
+    private CategorieRepository Repository;
 
     private long existingID;
     private long nonExistingID;
@@ -39,17 +31,16 @@ public class AddressServiceTest {
         existingID = 1L;
         nonExistingID = 2L;
 
-       Mockito.doNothing().when(addressRepository).deleteById(existingID);
-       Mockito.doThrow(ResourceNotFoundException.class).when(addressRepository).deleteById(nonExistingID);
+        Mockito.doNothing().when(Repository).deleteById(existingID);
+        Mockito.doThrow(ResourceNotFoundException.class).when(Repository).deleteById(nonExistingID);
 
     }
-
 
 
     @Test
     public void findByidShouldReturnNotFoundWhenIdDoesNotExist() {
         Assertions.assertThrows(ResourceNotFoundException.class, () -> {
-            service.deleteAddress(nonExistingID);
+            service.deleteCategorie(nonExistingID);
         });
 
     }
@@ -58,10 +49,10 @@ public class AddressServiceTest {
     public void deleteShouldDoNothingWhenIdExists() {
 
         Assertions.assertDoesNotThrow(() -> {
-            service.deleteAddress(existingID);
+            service.deleteCategorie(existingID);
         });
 
-        Mockito.verify(addressRepository, Mockito.times(1)).deleteById(existingID);
+        Mockito.verify(Repository, Mockito.times(1)).deleteById(existingID);
     }
 }
 

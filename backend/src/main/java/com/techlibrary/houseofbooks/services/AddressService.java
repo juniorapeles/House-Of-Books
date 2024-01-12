@@ -6,6 +6,8 @@ import com.techlibrary.houseofbooks.repositories.AddressRepository;
 import com.techlibrary.houseofbooks.services.exceptions.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,6 +57,12 @@ public class AddressService {
         return new AddressDTO(entity);
     }
     public void deleteAddress(Long id) {
-        repository.deleteById(id);
+       try{
+           repository.deleteById(id);
+       }catch (EmptyResultDataAccessException e){
+           throw new ResourceNotFoundException("Id not Found " + id);
+       }catch (DataIntegrityViolationException e){
+           throw new ResourceNotFoundException("Integrity violation");
+       }
     }
 }
