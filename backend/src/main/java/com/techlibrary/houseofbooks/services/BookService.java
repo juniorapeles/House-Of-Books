@@ -1,6 +1,8 @@
 package com.techlibrary.houseofbooks.services;
 
+import com.techlibrary.houseofbooks.dto.AuthorDTO;
 import com.techlibrary.houseofbooks.dto.BookDTO;
+import com.techlibrary.houseofbooks.entities.Author;
 import com.techlibrary.houseofbooks.entities.Book;
 import com.techlibrary.houseofbooks.repositories.BookRepository;
 import com.techlibrary.houseofbooks.services.exceptions.ResourceNotFoundException;
@@ -19,52 +21,13 @@ public class BookService {
     @Autowired
     private BookRepository repository;
 
-    @Autowired
-    private ModelMapper modelMapper;
-
-    public List<BookDTO> getAllBooks() {
-        List<Book> allBooks = repository.findAll();
-
-        List<BookDTO> allBooksDTOs = allBooks.stream()
-                .map(BookDTO::new)
-                .collect(Collectors.toList());
-        return allBooksDTOs;
-    }
-
-    public List<BookDTO> getAvailableBooks() {
-        List<Book> availableBooks = repository.findByBorrowedFalse();
-
-        return availableBooks.stream()
-                .map(BookDTO::new)
-                .collect(Collectors.toList());
-    }
-
-    public BookDTO getBookById(Long id) {
-        Optional<Book> bookOptional = repository.findById(id);
-
-        Book entity = bookOptional.orElseThrow(() -> new ResourceNotFoundException("Book not Found"));
-        return new BookDTO(entity);
-    }
-
     public BookDTO CreateBook(BookDTO bookDTO) {
-        Book book = new Book(bookDTO);
+
+        Book book = new BookDTO();
+
         repository.save(book);
-        return new BookDTO(book);
+
+        return new BookDTO(BookDTO);
+
     }
-
-    public BookDTO UpdateBook(Long id, BookDTO bookDTO) {
-        Optional<Book> obj = repository.findById(id);
-        Book entity = obj.orElseThrow(() -> new ResourceNotFoundException("Book Not Found"));
-        modelMapper.getConfiguration().setSkipNullEnabled(true);
-        modelMapper.map(bookDTO,entity);
-        repository.save(entity);
-        return new BookDTO(entity);
-    }
-
-    public void DeleteBook(Long id) {
-        repository.deleteById(id);
-    }
-
-
-
 }

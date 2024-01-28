@@ -1,7 +1,5 @@
 package com.techlibrary.houseofbooks.services;
 
-import com.techlibrary.houseofbooks.dto.AddressDTO;
-import com.techlibrary.houseofbooks.repositories.CategorieRepository;
 import com.techlibrary.houseofbooks.services.exceptions.ResourceNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

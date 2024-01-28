@@ -1,8 +1,6 @@
 package com.techlibrary.houseofbooks.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.techlibrary.houseofbooks.dto.AddressDTO;
-import com.techlibrary.houseofbooks.services.AddressService;
 import com.techlibrary.houseofbooks.services.exceptions.ResourceNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +18,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.web.servlet.function.RequestPredicates.contentType;
 
 @WebMvcTest(AddressController.class)
 public class AddressControllerTest {
