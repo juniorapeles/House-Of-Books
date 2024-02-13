@@ -4,6 +4,9 @@ package com.techlibrary.houseofbooks.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "TB_USER")
 public class User {
@@ -12,6 +15,14 @@ public class User {
     private Long id;
     @NotBlank(message = "the 'name' field cannot be blank")
     private String name;
+
+    @ManyToMany
+    @JoinTable(
+            name = "loan_relationship",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id"))
+    private Set<Book> loanedBooks = new HashSet<>();
+
 
     public User() {
     }

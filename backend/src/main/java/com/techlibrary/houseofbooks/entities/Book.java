@@ -4,8 +4,11 @@ import com.techlibrary.houseofbooks.dto.BookDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.ManyToAny;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_book")
@@ -24,6 +27,10 @@ public class Book {
     @Column(columnDefinition = "TEXT")
     @NotBlank(message = "the 'description' field cannot be blank")
     private String description;
+
+
+    @ManyToMany(mappedBy = "loanedBooks")
+    private Set<User> usersWhoBorrowed = new HashSet<>();
 
     public Book() {
     }
