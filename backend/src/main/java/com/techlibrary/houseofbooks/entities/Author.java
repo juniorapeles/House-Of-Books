@@ -20,7 +20,6 @@ public class Author {
     }
 
     public Author(AuthorDTO authorDTO) {
-        this.id = authorDTO.getId();
         this.name = authorDTO.getName();
         this.biography = authorDTO.getBiography();
     }

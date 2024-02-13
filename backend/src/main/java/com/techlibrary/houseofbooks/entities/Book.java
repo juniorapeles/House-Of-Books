@@ -20,23 +20,59 @@ public class Book {
     @JoinColumn(name = "author_id")
     @NotNull(message = "The 'author'  field cannot be null")
     private Author author;
-    @Temporal(TemporalType.DATE)
-    @NotNull(message = "the 'publication_date' field cannot be null")
-    private Date publication_date;
 
-    @NotBlank(message = "the 'name' field cannot be blank")
-    private String descricao;
+    @Column(columnDefinition = "TEXT")
+    @NotBlank(message = "the 'description' field cannot be blank")
+    private String description;
 
     public Book() {
     }
 
-    public Book(Long id, Boolean borrowed, String name, Author author, Date publication_date, String descricao) {
+    public Book(Long id, Boolean borrowed, String name, Author author) {
         this.id = id;
         this.borrowed = borrowed;
         this.name = name;
         this.author = author;
-        this.publication_date = publication_date;
-        this.descricao = descricao;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Boolean getBorrowed() {
+        return borrowed;
+    }
+
+    public void setBorrowed(Boolean borrowed) {
+        this.borrowed = borrowed;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
 
