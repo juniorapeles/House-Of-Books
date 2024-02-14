@@ -3,7 +3,7 @@ package com.techlibrary.houseofbooks.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "TB_LOAN")
+@Table(name = "tb_loan")
 public class Loan {
 
     @Id
@@ -12,19 +12,18 @@ public class Loan {
 
     @ManyToOne
     @JoinColumn(name = "book_id")
-    private Book book_id;
+    private Book book;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user_id;
+    private User user;
 
     public Loan() {
     }
 
-    public Loan(Long id, Book book_id, User user_id) {
-        this.id = id;
-        this.book_id = book_id;
-        this.user_id = user_id;
+    public Loan(Book book, User user) {
+        this.book = book;
+        this.user = user;
     }
 
     public Long getId() {
@@ -35,19 +34,19 @@ public class Loan {
         this.id = id;
     }
 
-    public Book getBook_id() {
-        return book_id;
+    public Book getBook() {
+        return book;
     }
 
-    public void setBook_id(Book book_id) {
-        this.book_id = book_id;
+    public void setBook(Book book) {
+        this.book = book;
     }
 
-    public User getUser_id() {
-        return user_id;
+    public User getUser() {
+        return user;
     }
 
-    public void setUser_id(User user_id) {
-        this.user_id = user_id;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

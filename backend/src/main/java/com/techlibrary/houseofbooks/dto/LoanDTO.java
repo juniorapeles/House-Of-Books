@@ -1,31 +1,27 @@
 package com.techlibrary.houseofbooks.dto;
 
-import com.techlibrary.houseofbooks.entities.Book;
 import com.techlibrary.houseofbooks.entities.Loan;
-import com.techlibrary.houseofbooks.entities.User;
 
 public class LoanDTO {
 
     private Long id;
-    private Book book_id;
-    private User user_id;
-
+    private Long bookId;
+    private Long userId;
 
     public LoanDTO() {
     }
 
-    public LoanDTO(Long id, Book book_id, User user_id) {
+    public LoanDTO(Long id, Long bookId, Long userId) {
         this.id = id;
-        this.book_id = book_id;
-        this.user_id = user_id;
+        this.bookId = bookId;
+        this.userId = userId;
     }
 
-    public LoanDTO(Loan entity) {
-        this.id = entity.getId();
-        this.book_id = entity.getBook_id();
-        this.user_id = entity.getUser_id();
+    public LoanDTO(Loan loan) {
+        this.id = loan.getId();
+        this.bookId = (loan.getBook() != null) ? loan.getBook().getId() : null;
+        this.userId = (loan.getUser() != null) ? loan.getUser().getId() : null;
     }
-
 
     public Long getId() {
         return id;
@@ -35,19 +31,19 @@ public class LoanDTO {
         this.id = id;
     }
 
-    public Book getBook_id() {
-        return book_id;
+    public Long getBookId() {
+        return bookId;
     }
 
-    public void setBook_id(Book book_id) {
-        this.book_id = book_id;
+    public void setBookId(Long bookId) {
+        this.bookId = bookId;
     }
 
-    public User getUser_id() {
-        return user_id;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser_id(User user_id) {
-        this.user_id = user_id;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

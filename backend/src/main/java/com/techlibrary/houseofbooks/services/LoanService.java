@@ -1,8 +1,12 @@
 package com.techlibrary.houseofbooks.services;
 
 import com.techlibrary.houseofbooks.dto.LoanDTO;
+import com.techlibrary.houseofbooks.entities.Book;
 import com.techlibrary.houseofbooks.entities.Loan;
+import com.techlibrary.houseofbooks.entities.User;
+import com.techlibrary.houseofbooks.repositories.BookRepository;
 import com.techlibrary.houseofbooks.repositories.LoanRepository;
+import com.techlibrary.houseofbooks.repositories.UserRepository;
 import com.techlibrary.houseofbooks.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,26 +20,41 @@ import java.util.Optional;
 public class LoanService {
 
     @Autowired
-    private LoanRepository repository;
+    private LoanRepository loanrepository;
 
-    @Transactional
-    public Page<LoanDTO> findAllPaged(PageRequest pageRequest) {
-        Page<Loan> list = repository.findAll(pageRequest);
-        return list.map(x -> new LoanDTO(x));
-    }
+    @Autowired
+    private BookRepository bookrepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+
+
+//    @Transactional
+//    public Page<LoanDTO> findAllPaged(PageRequest pageRequest) {
+//        Page<Loan> list = Loanrepository.findAll(pageRequest);
+//        return list.map(x -> new LoanDTO(x));
+//    }
+//
     public LoanDTO FindById(Long id) {
-        Optional<Loan> obj = repository.findById(id);
+        Optional<Loan> obj = loanrepository.findById(id);
         Loan entity = obj.orElseThrow(() -> new ResourceNotFoundException("Loan not Found"));
         return new LoanDTO(entity);
     }
 
-    public LoanDTO InsertLoan(LoanDTO dto) {
-        Loan entity = new Loan();
-        entity.setBook_id(dto.getBook_id());
-        entity.setUser_id(dto.getUser_id());
-        entity = repository.save(entity);
-        return new LoanDTO(entity);
+    public Loan insertLoan(LoanDTO dto) {
+        Book book = bookrepository.findById(dto.getBookId())
+                .orElseThrow(() -> new ResourceNotFoundException("O livro não foi encontrado " + dto.getBookId()));
+
+        User user = userRepository.findById(dto.getUserId())
+                .orElseThrow(() -> new ResourceNotFoundException("O Usuário não foi encontrado " + dto.getUserId()));
+
+        book.setBorrowed(true);
+        Loan loan = new Loan();
+        loan.setUser(user);
+        loan.setBook(book);
+
+        return loanrepository.save(loan);
     }
 
 
@@ -67,3 +86,4 @@ public class LoanService {
 //        book.setDescription(bookDTO.getDescription());
 //    }
 }
+
