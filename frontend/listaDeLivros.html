@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lista de Livros</title>
+
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+
+    <!-- Adicione os links do Bootstrap e DataTables CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.6/css/jquery.dataTables.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.6/js/jquery.dataTables.js"></script>
+
+    <style>
+        .tableStyle {
+            border-radius: 7px;
+        }
+    </style>
+</head>
+<body class="bg-dark text-light">
+
+    <div class="container-fluid">
+        <!-- Barra de navegação -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="./cadastroDeLivros.html">House Of Books</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="./cadastroDeLivros.html">Cadastro de livros</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./listaDeLivros.html">Lista de livros</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Tabela DataTable -->
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-8">
+                <table id="livrosTable" class="table tableStyle bg-white">
+                    <thead>
+                        <tr>
+                            <th>Nome do livro</th>
+                            <th>Autor</th>
+                            <th>Status</th>
+                            <th>Editar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Livro de como setar dados</td>
+                            <td>Autor mais que setado</td>
+                            <td>Emprestado</td>
+                            <td><i class='bx bxs-pencil'></i></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Configuração básica do DataTable
+            $('#livrosTable').DataTable({
+                ajax: {
+                    url: 'sua/api/endpoint', // Substitua pela URL da sua API
+                    dataSrc: '' // Se os dados diretamente estiverem no array raiz do JSON, use uma string vazia
+                },
+                columns: [
+                    { data: 'nomeLivro' }, // Substitua 'nomeLivro' pelo nome do campo correspondente em sua API
+                    { data: 'autor' },
+                    {
+                        data: null,
+                        render: function (data, type, row) {
+                            // Adicione botões de ação ou outras ações aqui, se necessário
+                            return '<button class="btn btn-primary">Detalhes</button>';
+                        }
+                    }
+                    // Adicione mais colunas conforme necessário
+                ]
+            });
+        });
+    </script>
+
+</body>
+</html>
