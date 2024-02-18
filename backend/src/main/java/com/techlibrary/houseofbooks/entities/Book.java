@@ -16,7 +16,6 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Boolean borrowed;
     @NotBlank(message = "the 'name' field cannot be blank")
     private String name;
     @ManyToOne
@@ -28,15 +27,12 @@ public class Book {
     @NotBlank(message = "the 'description' field cannot be blank")
     private String description;
 
-    @ManyToMany(mappedBy = "loanedBooks")
-    private Set<User> usersWhoBorrowed = new HashSet<>();
 
     public Book() {
     }
 
     public Book(Long id, Boolean borrowed, String name, Author author) {
         this.id = id;
-        this.borrowed = borrowed;
         this.name = name;
         this.author = author;
     }
@@ -47,14 +43,6 @@ public class Book {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Boolean getBorrowed() {
-        return borrowed;
-    }
-
-    public void setBorrowed(Boolean borrowed) {
-        this.borrowed = borrowed;
     }
 
     public String getName() {

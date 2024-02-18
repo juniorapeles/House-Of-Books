@@ -52,20 +52,20 @@ public class BookService {
                 .orElse(null);
 
         if (existingAuthor != null) {
-            // Se o autor existir, associa o livro a esse autor
+
             entity.setAuthor(existingAuthor);
         } else {
-            // Se o autor não existir, cria um novo autor
+
             Author newAuthor = new Author();
             newAuthor.setName(dto.getAuthorName());
-            // Salva o novo autor no banco de dados
+
             newAuthor = authorRepository.save(newAuthor);
-            // Associa o livro ao novo autor
+
             entity.setAuthor(newAuthor);
         }
-        // Salva o livro no banco de dados
+
         entity = bookRepository.save(entity);
-        // Retorna o DTO do livro recém-criado
+
         return new BookDTO(entity);
     }
 

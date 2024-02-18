@@ -23,6 +23,10 @@
         th,td{
             text-align: center;
         }
+
+        i{
+            cursor: pointer;
+        }
     </style>
 </head>
 <body class="bg-dark text-light">
@@ -58,6 +62,7 @@
                             <th>Autor</th>
                             <th>Status</th>
                             <th>Editar</th>
+                            <th>Excluir</th>
                         </tr>
                     </thead>
                     <tbody id="livrosTableBody">
@@ -67,10 +72,10 @@
             </div>
         </div>
     </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
     
-        $(document).ready(function() {
+    $(document).ready(function() {
         // Faz a chamada AJAX para obter os dados da API
         $.ajax({
             url: 'http://localhost:8080/books',
@@ -87,7 +92,8 @@
                                         '<td>' + livro.name + '</td>' +
                                         '<td>' + livro.authorName + '</td>' +  // Mude para livro.authorName
                                         '<td>' + getStatus(livro.borrowed) + '</td>' +
-                                        '<td><i class="bx bxs-pencil"></i></td>' +
+                                        '<td><i class="bx bx-pencil" onclick="EditarLivro(' + livro.id + ')"></i></td>' +
+                                        '<td><i class="bx bx-trash" onclick="deletarLivro(' + livro.id + ')"></i></td>' +
                                     '</tr>';
 
                     $('#livrosTableBody').append(tableRow);
@@ -102,7 +108,51 @@
         function getStatus(borrowed) {
             return borrowed ? 'Emprestado' : 'Disponível';
         }
+
+        
+       
     });
+
+
+
+        window.deletarLivro = async function(id) {
+            const confirmacao = await Swal.fire({
+                icon: 'warning',
+                title: 'Confirmação',
+                text: 'Tem certeza que deseja excluir este livro?',
+                showCancelButton: true,
+                confirmButtonText: 'Sim, excluir!',
+                cancelButtonText: 'Cancelar'
+            });
+
+            if (confirmacao.isConfirmed) {
+                try {
+                    await $.ajax({
+                        url: `http://localhost:8080/books/${id}`,
+                        type: 'DELETE',
+                    });
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sucesso',
+                        text: 'Livro excluído com sucesso!'
+                    }).then(() => {
+                        // Atualiza a página após a exclusão
+                        location.reload();
+                    });
+
+                    // Adicione aqui a lógica para atualizar a tabela ou fazer outras ações necessárias
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro',
+                        text: 'Erro ao excluir livro. Por favor, tente novamente.'
+                    });
+                    console.error('Erro ao excluir livro:', error);
+                }
+            }
+        };
+
     </script>
             
 
