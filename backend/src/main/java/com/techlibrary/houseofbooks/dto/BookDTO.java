@@ -9,14 +9,17 @@ public class BookDTO {
     private String authorName;
     private String description;
 
+    private Boolean borrowed;
+
     public BookDTO() {
     }
 
-    public BookDTO(Long id,String name, String author, String description) {
+    public BookDTO(Long id,String name, String author, String description, Boolean borrowed) {
         this.id = id;
         this.name = name;
         this.authorName = author;
         this.description = description;
+        this.borrowed = borrowed;
     }
 
     public BookDTO(Book book) {
@@ -24,6 +27,7 @@ public class BookDTO {
         this.name = book.getName();
         this.authorName = book.getAuthor().getName();
         this.description = book.getDescription();
+        this.borrowed = book.getBorrowed();
     }
 
 
@@ -57,5 +61,9 @@ public class BookDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Boolean getBorrowed() {
+        return borrowed;
     }
 }

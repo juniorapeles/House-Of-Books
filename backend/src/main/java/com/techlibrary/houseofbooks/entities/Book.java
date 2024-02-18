@@ -27,11 +27,12 @@ public class Book {
     @NotBlank(message = "the 'description' field cannot be blank")
     private String description;
 
+    private Boolean borrowed;
 
     public Book() {
     }
 
-    public Book(Long id, Boolean borrowed, String name, Author author) {
+    public Book(Long id, String name, Author author) {
         this.id = id;
         this.name = name;
         this.author = author;
@@ -67,6 +68,14 @@ public class Book {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Boolean getBorrowed() {
+        return borrowed;
+    }
+
+    public void setBorrowed(Boolean borrowed) {
+        this.borrowed = borrowed;
     }
 }
 
