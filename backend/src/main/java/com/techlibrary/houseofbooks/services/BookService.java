@@ -58,9 +58,7 @@ public class BookService {
 
             Author newAuthor = new Author();
             newAuthor.setName(dto.getAuthorName());
-
             newAuthor = authorRepository.save(newAuthor);
-
             entity.setAuthor(newAuthor);
         }
 
@@ -71,11 +69,31 @@ public class BookService {
 
 
     public BookDTO UpdateBook(Long id, BookDTO dto) {
-        try{
-            Book entity = bookRepository.getReferenceById(id);
+        try {
+            Book entity = bookRepository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("id not found " + id));
+
             entity.setName(dto.getName());
+            entity.setDescription(dto.getDescription());
+
+            List<Author> authors = authorRepository.findAll();
+            Author existingAuthor = authors.stream()
+                    .filter(author -> author.getName().equals(dto.getAuthorName()))
+                    .findFirst()
+                    .orElse(null);
+
+            if (existingAuthor != null) {
+                entity.setAuthor(existingAuthor);
+            } else {
+                Author newAuthor = new Author();
+                newAuthor.setName(dto.getAuthorName());
+                authorRepository.save(newAuthor);
+                entity.setAuthor(newAuthor);
+            }
+            entity = bookRepository.save(entity);
+
             return new BookDTO(entity);
-        } catch ( EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("id not found " + id);
         }
     }
