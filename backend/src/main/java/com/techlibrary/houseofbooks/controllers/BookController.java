@@ -59,6 +59,4 @@ public class BookController {
         service.DeleteBook(id);
         return ResponseEntity.noContent().build();
     }
-
-
 }

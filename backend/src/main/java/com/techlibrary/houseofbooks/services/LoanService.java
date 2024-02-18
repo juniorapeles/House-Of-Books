@@ -7,8 +7,11 @@ import com.techlibrary.houseofbooks.entities.User;
 import com.techlibrary.houseofbooks.repositories.BookRepository;
 import com.techlibrary.houseofbooks.repositories.LoanRepository;
 import com.techlibrary.houseofbooks.repositories.UserRepository;
+import com.techlibrary.houseofbooks.services.exceptions.DatabaseException;
 import com.techlibrary.houseofbooks.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -55,6 +58,16 @@ public class LoanService {
         loan.setBook(book);
 
         return loanrepository.save(loan);
+    }
+
+    public void returnBook(Long id) {
+        try {
+            loanrepository.deleteById(id);
+        } catch ( EmptyResultDataAccessException e){
+            throw new ResourceNotFoundException("id not found " + id);
+        } catch (DataIntegrityViolationException e){
+            throw new DatabaseException("Integrity violation");
+        }
     }
 
 

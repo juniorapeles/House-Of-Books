@@ -1,10 +1,13 @@
 package com.techlibrary.houseofbooks.controllers;
 
 
+import com.techlibrary.houseofbooks.dto.BookDTO;
 import com.techlibrary.houseofbooks.dto.LoanDTO;
 import com.techlibrary.houseofbooks.entities.Loan;
 import com.techlibrary.houseofbooks.services.LoanService;
+import com.techlibrary.houseofbooks.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -50,18 +53,12 @@ public class LoanController {
 
         return ResponseEntity.created(uri).body(insertedLoan);
     }
-//
-//    @PutMapping(value = "/{id}")
-//    public ResponseEntity<BookDTO> UpdateBook(@PathVariable Long id, @RequestBody BookDTO dto){
-//        dto = service.UpdateBook(id, dto);
-//        return ResponseEntity.ok().body(dto);
-//    }
-//
-//    @DeleteMapping(value = "/{id}")
-//    public ResponseEntity<BookDTO> DeleteBook(@PathVariable Long id) {
-//        service.DeleteBook(id);
-//        return ResponseEntity.noContent().build();
-//    }
 
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<BookDTO> returnBook(@PathVariable Long id) {
+        service.returnBook(id);
+        return ResponseEntity.noContent().build();
+    }
 
 }
