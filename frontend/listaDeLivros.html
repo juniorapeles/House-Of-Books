@@ -19,6 +19,10 @@
         .tableStyle {
             border-radius: 7px;
         }
+
+        th,td{
+            text-align: center;
+        }
     </style>
 </head>
 <body class="bg-dark text-light">
@@ -37,7 +41,7 @@
                             <a class="nav-link" href="./cadastroDeLivros.html">Cadastro de livros</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="./listaDeLivros.html">Lista de livros</a>
+                            <a class="nav-link" style="color:white;" href="./listaDeLivros.html">Lista de livros</a>
                         </li>
                     </ul>
                 </div>
@@ -56,13 +60,8 @@
                             <th>Editar</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>Livro de como setar dados</td>
-                            <td>Autor mais que setado</td>
-                            <td>Emprestado</td>
-                            <td><i class='bx bxs-pencil'></i></td>
-                        </tr>
+                    <tbody id="livrosTableBody">
+                        <!-- Dados da API serão exibidos aqui -->
                     </tbody>
                 </table>
             </div>
@@ -70,28 +69,42 @@
     </div>
 
     <script>
+    
         $(document).ready(function() {
-            // Configuração básica do DataTable
-            $('#livrosTable').DataTable({
-                ajax: {
-                    url: 'sua/api/endpoint', // Substitua pela URL da sua API
-                    dataSrc: '' // Se os dados diretamente estiverem no array raiz do JSON, use uma string vazia
-                },
-                columns: [
-                    { data: 'nomeLivro' }, // Substitua 'nomeLivro' pelo nome do campo correspondente em sua API
-                    { data: 'autor' },
-                    {
-                        data: null,
-                        render: function (data, type, row) {
-                            // Adicione botões de ação ou outras ações aqui, se necessário
-                            return '<button class="btn btn-primary">Detalhes</button>';
-                        }
-                    }
-                    // Adicione mais colunas conforme necessário
-                ]
-            });
+        // Faz a chamada AJAX para obter os dados da API
+        $.ajax({
+            url: 'http://localhost:8080/books',
+            type: 'GET',
+            success: function(data) {
+                // Limpa a tabela antes de popular com os novos dados
+                $('#livrosTableBody').empty();
+
+                // Itera sobre a lista de livros e adiciona cada um à tabela
+                for (var i = 0; i < data.content.length; i++) {
+                    var livro = data.content[i];
+
+                    var tableRow = '<tr>' +
+                                        '<td>' + livro.name + '</td>' +
+                                        '<td>' + livro.authorName + '</td>' +  // Mude para livro.authorName
+                                        '<td>' + getStatus(livro.borrowed) + '</td>' +
+                                        '<td><i class="bx bxs-pencil"></i></td>' +
+                                    '</tr>';
+
+                    $('#livrosTableBody').append(tableRow);
+                }
+            },
+            error: function(error) {
+                console.error('Erro ao obter dados da API', error);
+            }
         });
+
+        // Função auxiliar para obter o status do empréstimo
+        function getStatus(borrowed) {
+            return borrowed ? 'Emprestado' : 'Disponível';
+        }
+    });
     </script>
+            
 
 </body>
 </html>

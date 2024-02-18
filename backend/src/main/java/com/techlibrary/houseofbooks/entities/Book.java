@@ -28,7 +28,6 @@ public class Book {
     @NotBlank(message = "the 'description' field cannot be blank")
     private String description;
 
-
     @ManyToMany(mappedBy = "loanedBooks")
     private Set<User> usersWhoBorrowed = new HashSet<>();
 

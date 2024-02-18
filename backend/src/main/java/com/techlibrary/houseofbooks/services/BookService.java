@@ -1,14 +1,13 @@
 package com.techlibrary.houseofbooks.services;
 
-import com.techlibrary.houseofbooks.dto.AuthorDTO;
 import com.techlibrary.houseofbooks.dto.BookDTO;
 import com.techlibrary.houseofbooks.entities.Author;
 import com.techlibrary.houseofbooks.entities.Book;
+import com.techlibrary.houseofbooks.repositories.AuthorRepository;
 import com.techlibrary.houseofbooks.repositories.BookRepository;
 import com.techlibrary.houseofbooks.services.exceptions.DatabaseException;
 import com.techlibrary.houseofbooks.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -20,37 +19,60 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class BookService {
 
     @Autowired
-    private BookRepository repository;
+    private BookRepository bookRepository;
+
+    @Autowired
+    private AuthorRepository authorRepository;
 
     @Transactional
     public Page<BookDTO> findAllPaged(PageRequest pageRequest) {
-        Page<Book> list = repository.findAll(pageRequest);
+        Page<Book> list = bookRepository.findAll(pageRequest);
         return list.map(x -> new BookDTO(x));
     }
 
     public BookDTO FindById(Long id) {
-        Optional<Book> obj = repository.findById(id);
+        Optional<Book> obj = bookRepository.findById(id);
         Book entity = obj.orElseThrow(() -> new ResourceNotFoundException("Book not Found"));
         return new BookDTO(entity);
     }
 
-    public BookDTO InsertBook(BookDTO dto) {
+    public BookDTO insertBook(BookDTO dto) {
         Book entity = new Book();
-        UpdatedBookToBookDTO(dto, entity);
-        entity = repository.save(entity);
+        entity.setName(dto.getName());
+        entity.setDescription(dto.getDescription());
+        List<Author> authors = authorRepository.findAll();
+        Author existingAuthor = authors.stream()
+                .filter(author -> author.getName().equals(dto.getAuthorName()))
+                .findFirst()
+                .orElse(null);
+
+        if (existingAuthor != null) {
+            // Se o autor existir, associa o livro a esse autor
+            entity.setAuthor(existingAuthor);
+        } else {
+            // Se o autor não existir, cria um novo autor
+            Author newAuthor = new Author();
+            newAuthor.setName(dto.getAuthorName());
+            // Salva o novo autor no banco de dados
+            newAuthor = authorRepository.save(newAuthor);
+            // Associa o livro ao novo autor
+            entity.setAuthor(newAuthor);
+        }
+        // Salva o livro no banco de dados
+        entity = bookRepository.save(entity);
+        // Retorna o DTO do livro recém-criado
         return new BookDTO(entity);
     }
 
 
     public BookDTO UpdateBook(Long id, BookDTO dto) {
         try{
-            Book entity = repository.getReferenceById(id);
+            Book entity = bookRepository.getReferenceById(id);
             entity.setName(dto.getName());
             return new BookDTO(entity);
         } catch ( EntityNotFoundException e){
@@ -60,7 +82,7 @@ public class BookService {
 
     public void DeleteBook(Long id) {
         try {
-            repository.deleteById(id);
+            bookRepository.deleteById(id);
         } catch ( EmptyResultDataAccessException e){
             throw new ResourceNotFoundException("id not found " + id);
         } catch (DataIntegrityViolationException e){
@@ -69,10 +91,6 @@ public class BookService {
     }
 
     private void UpdatedBookToBookDTO(BookDTO bookDTO, Book book) {
-        book.setId(bookDTO.getId());
-        book.setName(bookDTO.getName());
-        book.setBorrowed(bookDTO.getBorrowed());
-        book.setAuthor(bookDTO.getAuthor());
-        book.setDescription(bookDTO.getDescription());
+
     }
 }

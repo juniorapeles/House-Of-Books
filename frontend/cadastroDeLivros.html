@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Formulário Bootstrap</title>
+    <title>House of books</title>
 
     <!-- Adicione os links do Bootstrap CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -19,49 +19,115 @@
        }
     </style>
 </head>
-<body class="bg-dark text-light">
+    <body class="bg-dark text-light">
 
-    <div class="container-fluid">
-        <!-- Barra de navegação -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container">
-                <a class="navbar-brand" href="#">House Of Books</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Cadastro de livros</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="./listaDeLivros.html">lista de livros</a>
-                        </li>
-                    </ul>
+        <div class="container-fluid">
+            <!-- Barra de navegação -->
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="container">
+                    <a class="navbar-brand" href="#">House Of Books</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a style="color:white" class="nav-link" href="#">Cadastro de livros</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="./listaDeLivros.html">lista de livros</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Formulário centralizado -->
+            <div class="row justify-content-center mt-5">
+                <div class="col-md-6">
+                    <form class="p-4 shadow-lg formStyle bg-light">
+                        <h2>Cadastre seu livro</h2>
+                        <div class="mb-3">
+                            <label for="txtNomeLivro" class="form-label">Nome do livro</label>
+                            <input type="text" class="form-control" id="txtNomeLivro" placeholder="Nome do livro">
+                        </div>
+                        <div class="mb-3">
+                            <div class="mb-3">
+                                <label for="txtNomeAutor" class="form-label">Autor</label>
+                                <input type="text" class="form-control" id="txtNomeAutor" placeholder="Digite o nome">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="mb-3">
+                                <label for="txtDescricao" class="form-label">Descrição</label>
+                                <textarea class="form-control" id="txtDescricao" placeholder="Digite a descrição"></textarea>
+                            </div>
+                        </div>
+                        <button type="button" onclick="inserirLivro()" class="btn btn-primary">Enviar</button>
+                    </form>
                 </div>
             </div>
-        </nav>
-
-        <!-- Formulário centralizado -->
-        <div class="row justify-content-center mt-5">
-            <div class="col-md-6">
-                <form class="p-4 shadow-lg formStyle bg-light">
-                    <h2>Cadastre seu livro</h2>
-                    <div class="mb-3">
-                        <label for="txtNomeLivro" class="form-label">Nome do livro</label>
-                        <input type="text" class="form-control" id="txtNomeLivro" placeholder="Nome do livro">
-                    </div>
-                    <div class="mb-3">
-                        <div class="mb-3">
-                            <label for="txtNomeAutor" class="form-label">Autor</label>
-                            <input type="text" class="form-control" id="txtNomeAutor" placeholder="Digite o nome">
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Enviar</button>
-                </form>
-            </div>
         </div>
-    </div>
 
-</body>
+
+    </body>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function inserirLivro() {
+            // Obtém os valores do formulário
+            var nomeLivro = $('#txtNomeLivro').val();
+            var autorLivro = $('#txtNomeAutor').val();
+            var descricaoLivro = $('#txtDescricao').val();
+
+            // Validar entrada, por exemplo, garantir que os campos obrigatórios estão preenchidos
+            if (!nomeLivro || !autorLivro || !descricaoLivro) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro',
+                    text: 'Por favor, preencha todos os campos do formulário.'
+                });
+                return;
+            }
+
+            // Cria o objeto JSON com os dados do livro
+            var novoLivro = {
+                "name": nomeLivro,
+                "authorName":autorLivro,
+                "description": descricaoLivro
+            };
+
+            // Faz a chamada AJAX para inserir o novo livro
+            $.ajax({
+                url: 'http://localhost:8080/books',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(novoLivro),
+                success: function(data) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sucesso',
+                        text: 'Livro inserido com sucesso: ' + data.name,
+                        confirmButtonText: 'OK'
+                    }).then(function(result) {
+                        if (result.isConfirmed) {
+                            // Redireciona para a página listaDeLivros.html após o sucesso
+                            window.location.href = './listaDeLivros.html';
+                        }
+                        // Aqui você pode adicionar lógica para atualizar a tabela ou fazer outras ações necessárias
+                    });
+                },
+                error: function(error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro',
+                        text: 'Erro ao inserir livro. Por favor, tente novamente.'
+                    });
+                    console.error('Erro ao inserir livro:', error);
+                }
+            });
+        }
+    </script>
+   
+
 </html>

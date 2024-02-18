@@ -13,7 +13,6 @@ public class Author {
     @NotBlank(message = "the 'name' field cannot be blank")
     private String name;
     @Column(columnDefinition = "TEXT")
-    @NotBlank(message = "the 'message' field cannot be blank")
     private String biography;
 
     public Author() {
@@ -22,6 +21,10 @@ public class Author {
     public Author(AuthorDTO authorDTO) {
         this.name = authorDTO.getName();
         this.biography = authorDTO.getBiography();
+    }
+
+    public Author(String name) {
+        this.name = name;
     }
 
     public Author(Long id, String name, String biography) {

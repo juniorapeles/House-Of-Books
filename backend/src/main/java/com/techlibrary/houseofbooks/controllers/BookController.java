@@ -42,9 +42,9 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity<BookDTO> InsertBook(@RequestBody BookDTO dto){
-        dto = service.InsertBook(dto);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
+    public ResponseEntity<BookDTO> insertBook(@RequestBody BookDTO dto){
+        dto = service.insertBook(dto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getName()).toUri();
         return ResponseEntity.created(uri).body(dto);
     }
 

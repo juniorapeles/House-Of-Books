@@ -1,43 +1,28 @@
 package com.techlibrary.houseofbooks.dto;
 
-import com.techlibrary.houseofbooks.entities.Author;
 import com.techlibrary.houseofbooks.entities.Book;
-
 
 public class BookDTO {
 
-    private Long id;
-    private Boolean borrowed;
     private String name;
-    private Author author;
-
+    private String authorName;
     private String description;
 
     public BookDTO() {
     }
 
-    public BookDTO(Boolean borrowed, String name, Author author, String description) {
-        this.borrowed = borrowed;
+    public BookDTO(String name, String author, String description) {
         this.name = name;
-        this.author = author;
+        this.authorName = author;
         this.description = description;
     }
 
-    public BookDTO(Book entity) {
-        this.id = entity.getId();
-        this.borrowed = entity.getBorrowed();
-        this.name = entity.getName();
-        this.author = entity.getAuthor();
-        this.description = entity.getDescription();
+    public BookDTO(Book book) {
+        this.name = book.getName();
+        this.authorName = book.getAuthor().getName();
+        this.description = book.getDescription();
     }
 
-    public Boolean getBorrowed() {
-        return borrowed;
-    }
-
-    public void setBorrowed(Boolean borrowed) {
-        this.borrowed = borrowed;
-    }
 
     public String getName() {
         return name;
@@ -47,12 +32,12 @@ public class BookDTO {
         this.name = name;
     }
 
-    public Author getAuthor() {
-        return author;
+    public String getAuthorName() {
+        return authorName;
     }
 
-    public void setAuthor(Author author) {
-        this.author = author;
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
     }
 
     public String getDescription() {
@@ -61,9 +46,5 @@ public class BookDTO {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Long getId() {
-        return id;
     }
 }
