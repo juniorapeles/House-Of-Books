@@ -13,15 +13,13 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" charset="utf8"
-        src="https://cdn.datatables.net/1.11.6/js/jquery.dataTables.js"></script>
+    
 
     <style>
         .tableStyle {
             border-radius: 7px;
         }
 
-        
         .center-icons {
             text-align: center;
         }
@@ -53,7 +51,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary" onclick="pegarEmprestado()">Pegar Emprestado</button>
+                    <button type="button" class="btn btn-primary" value="" id="btnPegaEmprestado" onclick="pegarEmprestado()">Pegar Emprestado</button>
+                    <button type="button" class="btn btn-success" id="btnDevolverLivro" onclick="devolverLivro()">Devolver Livro</button>
                 </div>
             </div>
         </div>
@@ -78,7 +77,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary" onclick="pegarEmprestado()">Pegar Emprestado</button>
+                    <button type="button" value="" id="btnPegarEmprestado" class="btn btn-primary" onclick="pegarEmprestado()">Pegar Emprestado</button>
                 </div>
             </div>
         </div>
@@ -148,6 +147,7 @@
                 <table id="livrosTable" class="table table-striped tableStyle bg-white">
                     <thead>
                         <tr>
+                            <th>id</th>
                             <th>Nome do livro</th>
                             <th>Autor</th>
                             <th>Status</th>
@@ -180,12 +180,14 @@
                     for (var i = 0; i < data.content.length; i++) {
                         var livro = data.content[i];
 
-                        var tableRow = '<tr onclick="informacoesDoLivro(\'' + livro.name + '\', \'' + livro.authorName + '\', \'' + getStatus(livro.borrowed) + '\')">' +                            '<td>' + livro.name + '</td>' +
-                            '<td>' + livro.authorName + '</td>' +  // Mude para livro.authorName
-                            '<td>' + getStatus(livro.borrowed) + '</td>' +
-                            '<td class="center-icons"><i class="bx bx-pencil" onclick="editarLivro(' + livro.id + ')"></i></td>' +
-                            '<td class="center-icons"><i class="bx bx-trash" onclick="deletarLivro(' + livro.id + ')"></i></td>' +
-                            '</tr>';
+                        var tableRow = '<tr onclick="informacoesDoLivro(' + livro.id + ', \'' + livro.name + '\', \'' + livro.authorName + '\', \'' + getStatus(livro.borrowed) + '\')">' +
+                                '<td>' + livro.id + '</td>' +
+                                '<td>' + livro.name + '</td>' +
+                                '<td>' + livro.authorName + '</td>' +
+                                '<td>' + getStatus(livro.borrowed) + '</td>' +
+                                '<td class="center-icons"><i class="bx bx-pencil" onclick="editarLivro(' + livro.id + ')"></i></td>' +
+                                '<td class="center-icons"><i class="bx bx-trash" onclick="deletarLivro(' + livro.id + ')"></i></td>' +
+                                '</tr>';
 
                         $('#livrosTableBody').append(tableRow);
                     }
@@ -321,12 +323,97 @@
 
 
 
-        function informacoesDoLivro(nomeLivro, nomeAutor, status) {
+        function informacoesDoLivro(id,nomeLivro, nomeAutor, status) {
+            $('#btnPegaEmprestado').val(id);
             $('#livroModal').modal('show');
             $('#livroNome').text(nomeLivro);
             $('#livroAutor').text(nomeAutor);
             $('#livroStatus').text(status);
         }
+
+
+
+
+        function pegarEmprestado() {
+            Swal.fire({
+                title: 'Confirmação',
+                text: 'Deseja pegar emprestado este livro?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Sim, pegar emprestado!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Obter o ID do livro do valor do botão
+                    var idLivro = $('#btnPegaEmprestado').val();
+
+                   
+
+                    // Criar o objeto JSON com os dados
+                    var dadosEmprestimo = {
+                        idBook: idLivro,
+                        idUser: 1 // ID do usuário fixo como 1
+                    };
+
+                    console.log(dadosEmprestimo);
+                    
+
+                    // Fazer a requisição AJAX para obter o empréstimo
+                    $.ajax({
+                    url: 'http://localhost:8080/loan', // Substitua pela URL correta
+                    type: 'POST', // Mude para POST
+                    contentType: 'application/json', // Defina o tipo de conteúdo para JSON
+                    data: JSON.stringify(dadosEmprestimo), // Converte o objeto JSON para uma string JSON
+                    success: function(data) {
+                        // Mostra um Swal.fire de sucesso
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Sucesso',
+                            text: 'Livro emprestado com sucesso!'
+                        }).then((result) => {
+                            // Redireciona para a página atual após o sucesso
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
+                        });
+                    },
+                    error: function(error) {
+                        console.error('Erro ao obter empréstimo:', error);
+                    }
+                });
+
+                }
+            });
+        }
+
+        function devolverLivro() {
+            // Obtenha o ID do livro do botão
+            var idLivro = $('#btnPegaEmprestado').val();
+
+            // Faça a requisição AJAX
+            $.ajax({
+                url: 'http://localhost:8080/loan/' + idLivro, // URL correta para a devolução do livro
+                type: 'DELETE', // Utilize o método DELETE
+                contentType: 'application/json',
+                success: function(data) {
+                    // Mostra um Swal.fire de sucesso
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sucesso',
+                        text: 'Livro devolvido com sucesso!'
+                    }).then((result) => {
+                        // Redireciona para a página atual após o sucesso
+                        if (result.isConfirmed) {
+                            window.location.reload();
+                        }
+                    });
+                },
+                error: function(error) {
+                    console.error('Erro ao devolver o livro:', error);
+                }
+            });
+        }
+
     </script>
 
 
