@@ -56,9 +56,9 @@ public class LoanController {
 //        return ResponseEntity.ok().body(dto);
 //    }
 //
-//    @DeleteMapping(value = "/{id}")
-//    public ResponseEntity<BookDTO> DeleteBook(@PathVariable Long id) {
-//        service.DeleteBook(id);
-//        return ResponseEntity.noContent().build();
-//    }
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<LoanDTO> returnBook(@PathVariable Long id) {
+        service.returnBook(id);
+        return ResponseEntity.noContent().build();
+    }
 }

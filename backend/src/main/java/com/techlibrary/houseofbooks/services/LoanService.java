@@ -8,6 +8,7 @@ import com.techlibrary.houseofbooks.repositories.BookRepository;
 import com.techlibrary.houseofbooks.repositories.LoanRepository;
 import com.techlibrary.houseofbooks.repositories.UserRepository;
 import com.techlibrary.houseofbooks.services.exceptions.BookBorrowedException;
+import com.techlibrary.houseofbooks.services.exceptions.BookIsNotBorrowedException;
 import com.techlibrary.houseofbooks.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,5 +49,21 @@ public class LoanService {
         loanRepository.save(loanEntity);
 
         return new LoanDTO(loanEntity);
+    }
+
+    public void returnBook(Long id) {
+        Optional<Book> optionalBook = bookRepository.findById(id);
+        Book bookEntity = optionalBook.orElseThrow(() -> new ResourceNotFoundException("Book not Found"));
+        if (bookEntity.getBorrowed() && loanRepository.existsByBookId(bookEntity.getId())) {
+
+            Optional<Loan> OptionalLoan = loanRepository.findByBookId(bookEntity.getId());
+            Loan loanEntity = OptionalLoan.orElseThrow(() -> new ResourceNotFoundException("Loan not Found"));
+
+            loanRepository.deleteById(loanEntity.getId());
+            bookEntity.setBorrowed(false);
+            bookRepository.save(bookEntity);
+        }else{
+            throw new BookIsNotBorrowedException("the book is not on loan");
+        }
     }
 }
