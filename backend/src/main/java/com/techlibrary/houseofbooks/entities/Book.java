@@ -27,7 +27,7 @@ public class Book {
     @NotBlank(message = "the 'description' field cannot be blank")
     private String description;
 
-    private Boolean borrowed;
+    private Boolean borrowed = false;
 
     public Book() {
     }

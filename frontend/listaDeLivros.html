@@ -39,7 +39,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="livroModalLabel">Detalhes do Livro</h5>
+                    <h5 class="modal-title" id="livroModalLabel" style="color:black">Detalhes do Livro</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -48,6 +48,7 @@
                     <p><strong>Nome do Livro:</strong> <span id="livroNome"></span></p>
                     <p><strong>Autor:</strong> <span id="livroAutor"></span></p>
                     <p><strong>Status:</strong> <span id="livroStatus"></span></p>
+                    <p><strong>Descrição:</strong> <span id="descLivro"></span></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
@@ -323,12 +324,28 @@
 
 
 
-        function informacoesDoLivro(id,nomeLivro, nomeAutor, status) {
-            $('#btnPegaEmprestado').val(id);
-            $('#livroModal').modal('show');
-            $('#livroNome').text(nomeLivro);
-            $('#livroAutor').text(nomeAutor);
-            $('#livroStatus').text(status);
+        function informacoesDoLivro(id) {
+            $.ajax({
+                url: 'http://localhost:8080/books/' + id,
+                type: 'GET',
+                success: function(data) {
+                    // Certifique-se de que a resposta contém os dados corretos
+                    if (data) {
+                        // Use os dados da resposta para preencher os campos
+                        $('#btnPegaEmprestado').val(id);
+                        $('#livroModal').modal('show');
+                        $('#livroNome').text(data.name || 'Nome do Livro');
+                        $('#livroAutor').text(data.authorName || 'Nome do Autor');
+                        $('#livroStatus').text(data.borrowed ? 'Emprestado' : 'Disponível');
+                        $('#descLivro').text(data.description || 'Descrição do Livro');
+                    } else {
+                        console.error('Erro ao obter informações do livro. Resposta inválida:', data);
+                    }
+                },
+                error: function(error) {
+                    console.error('Erro ao obter informações do livro:', error);
+                }
+            });
         }
 
 
