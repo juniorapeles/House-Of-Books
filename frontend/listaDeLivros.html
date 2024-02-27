@@ -181,13 +181,13 @@
                     for (var i = 0; i < data.content.length; i++) {
                         var livro = data.content[i];
 
-                        var tableRow = '<tr onclick="informacoesDoLivro(' + livro.id + ', \'' + livro.name + '\', \'' + livro.authorName + '\', \'' + getStatus(livro.borrowed) + '\')">' +
+                        var tableRow = '<tr>' +
                                 '<td>' + livro.id + '</td>' +
-                                '<td>' + livro.name + '</td>' +
+                                '<td onclick="informacoesDoLivro(' + livro.id + ', \'' + livro.name + '\', \'' + livro.authorName + '\', \'' + getStatus(livro.borrowed) + '\')">' + livro.name + '</td>' +
                                 '<td>' + livro.authorName + '</td>' +
                                 '<td>' + getStatus(livro.borrowed) + '</td>' +
-                                '<td class="center-icons"><i class="bx bx-pencil" onclick="editarLivro(' + livro.id + ')"></i></td>' +
-                                '<td class="center-icons"><i class="bx bx-trash" onclick="deletarLivro(' + livro.id + ')"></i></td>' +
+                                '<td onclick="editarLivro(' + livro.id + ')" class="center-icons"><i class="bx bx-pencil"></i></td>' +
+                                '<td onclick="deletarLivro(' + livro.id + ')" class="center-icons"><i class="bx bx-trash"></i></td>' +
                                 '</tr>';
 
                         $('#livrosTableBody').append(tableRow);
