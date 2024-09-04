@@ -99,17 +99,11 @@ public class BookService {
 
     public void DeleteBook(Long id) {
         try {
-            bookRepository.deleteById(5L);
+            bookRepository.deleteById(id);
         } catch ( EmptyResultDataAccessException e){
             throw new ResourceNotFoundException("id not found " + id);
         } catch (DataIntegrityViolationException e){
             throw new DatabaseException("Integrity violation");
         }
     }
-
-    private void UpdatedBookToBookDTO(BookDTO bookDTO, Book book) {
-
-    }
-
-
 }
