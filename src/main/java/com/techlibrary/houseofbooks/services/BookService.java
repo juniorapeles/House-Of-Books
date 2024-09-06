@@ -3,12 +3,12 @@ package com.techlibrary.houseofbooks.services;
 import com.techlibrary.houseofbooks.dto.BookDTO;
 import com.techlibrary.houseofbooks.entities.Author;
 import com.techlibrary.houseofbooks.entities.Book;
+import com.techlibrary.houseofbooks.mapper.BookMapper;
 import com.techlibrary.houseofbooks.repositories.AuthorRepository;
 import com.techlibrary.houseofbooks.repositories.BookRepository;
 import com.techlibrary.houseofbooks.services.exceptions.DatabaseException;
 import com.techlibrary.houseofbooks.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -22,26 +22,33 @@ import java.util.Optional;
 @Service
 public class BookService {
 
-    @Autowired
-    private BookRepository bookRepository;
+    private static final String MSG_ID_NOT_FOUND = "id not found ";
+    private static final String MSG_BOOK_NOT_FOUND = "Book not found";
 
-    @Autowired
-    private AuthorRepository authorRepository;
+    private final BookRepository bookRepository;
+    private final AuthorRepository authorRepository;
+    private final BookMapper bookMapper;
+
+    public BookService(BookRepository bookRepository, AuthorRepository authorRepository, BookMapper bookMapper){
+        this.bookRepository = bookRepository;
+        this.bookMapper = bookMapper;
+        this.authorRepository = authorRepository;
+    }
 
     @Transactional
     public Page<BookDTO> findAllPaged(Pageable pageable) {
         Page<Book> list = bookRepository.findAll(pageable);
-        return list.map(x -> new BookDTO(x));
+        return list.map(BookDTO::new);
     }
 
-    public BookDTO FindById(Long id) {
+    public BookDTO findById(Long id) {
         Optional<Book> obj = bookRepository.findById(id);
-        Book entity = obj.orElseThrow(() -> new ResourceNotFoundException("Book not Found"));
+        Book entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_BOOK_NOT_FOUND));
         return new BookDTO(entity);
     }
 
     public BookDTO insertBook(BookDTO dto) {
-        Book entity = new Book();
+        Book entity = bookMapper.toEntity(dto);
         entity.setName(dto.getName());
         entity.setDescription(dto.getDescription());
         List<Author> authors = authorRepository.findAll();
@@ -67,10 +74,10 @@ public class BookService {
     }
 
 
-    public BookDTO UpdateBook(Long id, BookDTO dto) {
+    public BookDTO updateBook(Long id, BookDTO dto) {
         try {
             Book entity = bookRepository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFoundException("id not found " + id));
+                    .orElseThrow(() -> new ResourceNotFoundException(MSG_ID_NOT_FOUND + id));
 
             entity.setName(dto.getName());
             entity.setDescription(dto.getDescription());
@@ -90,18 +97,17 @@ public class BookService {
                 entity.setAuthor(newAuthor);
             }
             entity = bookRepository.save(entity);
-
-            return new BookDTO(entity);
+            return bookMapper.toDTO(entity);
         } catch (EntityNotFoundException e) {
-            throw new ResourceNotFoundException("id not found " + id);
+            throw new ResourceNotFoundException(MSG_ID_NOT_FOUND + id);
         }
     }
 
-    public void DeleteBook(Long id) {
+    public void deleteBookById(Long id) {
         try {
             bookRepository.deleteById(id);
         } catch ( EmptyResultDataAccessException e){
-            throw new ResourceNotFoundException("id not found " + id);
+            throw new ResourceNotFoundException(MSG_ID_NOT_FOUND + id);
         } catch (DataIntegrityViolationException e){
             throw new DatabaseException("Integrity violation");
         }

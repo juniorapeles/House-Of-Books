@@ -20,27 +20,27 @@ import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 @Service
 public class LoanService {
 
-    @Autowired
-    private LoanRepository loanRepository;
-    @Autowired
-    private BookRepository bookRepository;
+    private final LoanRepository loanRepository;
+    private final BookRepository bookRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
+    public LoanService(LoanRepository loanRepository, BookRepository bookRepository, UserRepository userRepository) {
+        this.loanRepository = loanRepository;
+        this.bookRepository = bookRepository;
+        this.userRepository = userRepository;
+    }
 
     public LoanDTO insertLoan(LoanDTO dto) {
 
         Book bookEntity = bookRepository.findById(dto.getIdBook())
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found with id: " + dto.getIdBook()));
 
-        if (bookEntity.getBorrowed()) {
+        if (Boolean.TRUE.equals(bookEntity.getBorrowed())) {
             throw new BookBorrowedException("Book is already borrowed.");
         } else {
             bookEntity.setBorrowed(true);
             bookRepository.save(bookEntity);
         }
-
 
         Optional<User> objUser = userRepository.findById(dto.getIdUser());
         User userEntity = objUser.orElseThrow(() -> new ResourceNotFoundException("User not Found"));
@@ -54,10 +54,10 @@ public class LoanService {
     public void returnBook(Long id) {
         Optional<Book> optionalBook = bookRepository.findById(id);
         Book bookEntity = optionalBook.orElseThrow(() -> new ResourceNotFoundException("Book not Found"));
-        if (bookEntity.getBorrowed() && loanRepository.existsByBookId(bookEntity.getId())) {
+        if (Boolean.TRUE.equals(bookEntity.getBorrowed()) && loanRepository.existsByBookId(bookEntity.getId())) {
 
-            Optional<Loan> OptionalLoan = loanRepository.findByBookId(bookEntity.getId());
-            Loan loanEntity = OptionalLoan.orElseThrow(() -> new ResourceNotFoundException("Loan not Found"));
+            Optional<Loan> optionalLoan = loanRepository.findByBookId(bookEntity.getId());
+            Loan loanEntity = optionalLoan.orElseThrow(() -> new ResourceNotFoundException("Loan not Found"));
 
             loanRepository.deleteById(loanEntity.getId());
             bookEntity.setBorrowed(false);

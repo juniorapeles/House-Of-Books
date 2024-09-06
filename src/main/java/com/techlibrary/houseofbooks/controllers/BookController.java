@@ -20,34 +20,34 @@ public class BookController {
     private BookService service;
 
     @GetMapping
-    public ResponseEntity<Page<BookDTO>> FindAll(Pageable pageable){
+    public ResponseEntity<Page<BookDTO>> FindAll(Pageable pageable) {
         Page<BookDTO> list = service.findAllPaged(pageable);
         return ResponseEntity.ok().body(list);
     }
 
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<BookDTO> FindById(@PathVariable  Long id){
-        BookDTO dto = service.FindById(id);
+    public ResponseEntity<BookDTO> findById(@PathVariable Long id) {
+        BookDTO dto = service.findById(id);
         return ResponseEntity.ok().body(dto);
     }
 
     @PostMapping
-    public ResponseEntity<BookDTO> insertBook(@RequestBody BookDTO dto){
+    public ResponseEntity<BookDTO> insertBook(@RequestBody BookDTO dto) {
         dto = service.insertBook(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getName()).toUri();
         return ResponseEntity.created(uri).body(dto);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<BookDTO> UpdateBook(@PathVariable Long id, @RequestBody BookDTO dto){
-        dto = service.UpdateBook(id, dto);
+    public ResponseEntity<BookDTO> updateBook(@PathVariable Long id, @RequestBody BookDTO dto) {
+        dto = service.updateBook(id, dto);
         return ResponseEntity.ok().body(dto);
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<BookDTO> DeleteBook(@PathVariable Long id) {
-        service.DeleteBook(id);
+    public ResponseEntity<BookDTO> deleteBookById(@PathVariable Long id) {
+        service.deleteBookById(id);
         return ResponseEntity.noContent().build();
     }
 }
