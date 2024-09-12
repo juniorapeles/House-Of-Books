@@ -1,14 +1,8 @@
 package com.techlibrary.houseofbooks.entities;
 
-import com.techlibrary.houseofbooks.dto.BookDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import org.hibernate.annotations.ManyToAny;
-
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "tb_book")

@@ -1,14 +1,10 @@
 package com.techlibrary.houseofbooks.controllers;
 
 
-import com.techlibrary.houseofbooks.dto.BookDTO;
 import com.techlibrary.houseofbooks.dto.LoanDTO;
-import com.techlibrary.houseofbooks.services.BookService;
 import com.techlibrary.houseofbooks.services.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -19,8 +15,15 @@ import java.net.URI;
 @CrossOrigin(origins = "http://127.0.0.1:5500")
 @RequestMapping("/loan")
 public class LoanController {
+
+    private final LoanService service;
+
     @Autowired
-    private LoanService service;
+    public LoanController(final LoanService service) {
+        this.service = service;
+    }
+
+    //retorno
 
 //    @GetMapping
 //    public ResponseEntity<Page<BookDTO>> FindAll(

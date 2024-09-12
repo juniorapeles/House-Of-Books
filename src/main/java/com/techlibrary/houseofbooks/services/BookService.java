@@ -12,6 +12,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class BookService {
+    public class BookService {
 
     private static final String MSG_ID_NOT_FOUND = "id not found ";
     private static final String MSG_BOOK_NOT_FOUND = "Book not found";
@@ -29,7 +30,7 @@ public class BookService {
     private final AuthorRepository authorRepository;
     private final BookMapper bookMapper;
 
-    public BookService(BookRepository bookRepository, AuthorRepository authorRepository, BookMapper bookMapper){
+    public BookService(BookRepository bookRepository, AuthorRepository authorRepository, BookMapper bookMapper) {
         this.bookRepository = bookRepository;
         this.bookMapper = bookMapper;
         this.authorRepository = authorRepository;
@@ -38,6 +39,16 @@ public class BookService {
     @Transactional
     public Page<BookDTO> findAllPaged(Pageable pageable) {
         Page<Book> list = bookRepository.findAll(pageable);
+        return list.map(BookDTO::new);
+    }
+
+    public Page<BookDTO> findAvailableBooks(Pageable pageable) {
+        Page<Book> list = bookRepository.findByBorrowedFalse(pageable);
+        return list.map(BookDTO::new);
+    }
+
+    public Page<BookDTO> findByBorrowedTrue(Pageable pageable) {
+        Page<Book> list = bookRepository.findByBorrowedTrue(pageable);
         return list.map(BookDTO::new);
     }
 
@@ -106,10 +117,11 @@ public class BookService {
     public void deleteBookById(Long id) {
         try {
             bookRepository.deleteById(id);
-        } catch ( EmptyResultDataAccessException e){
+        } catch (EmptyResultDataAccessException e) {
             throw new ResourceNotFoundException(MSG_ID_NOT_FOUND + id);
-        } catch (DataIntegrityViolationException e){
+        } catch (DataIntegrityViolationException e) {
             throw new DatabaseException("Integrity violation");
         }
     }
+
 }
