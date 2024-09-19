@@ -22,6 +22,7 @@ public class LoanDTO {
         this.idUser = loan.getUser().getId();
     }
 
+
     public Long getIdBook() {
         return idBook;
     }

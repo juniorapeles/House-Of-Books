@@ -1,5 +1,6 @@
 package com.techlibrary.houseofbooks.services;
 
+import com.techlibrary.houseofbooks.dto.BookDTO;
 import com.techlibrary.houseofbooks.dto.LoanDTO;
 import com.techlibrary.houseofbooks.entities.Book;
 import com.techlibrary.houseofbooks.entities.Loan;
@@ -11,7 +12,10 @@ import com.techlibrary.houseofbooks.services.exceptions.BookBorrowedException;
 import com.techlibrary.houseofbooks.services.exceptions.BookIsNotBorrowedException;
 import com.techlibrary.houseofbooks.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -23,6 +27,19 @@ public class LoanService {
     private final LoanRepository loanRepository;
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
+
+
+    @Transactional
+    public Page<LoanDTO> findAllPaged(Pageable pageable) {
+        Page<Loan> list = loanRepository.findAll(pageable);
+        return list.map(LoanDTO::new);
+    }
+
+    public LoanDTO findById(Long id) {
+        Optional<Loan> obj = loanRepository.findById(id);
+        Loan entity = obj.orElseThrow(() -> new ResourceNotFoundException("Loan Not Found"));
+        return new LoanDTO(entity);
+    }
 
     public LoanService(LoanRepository loanRepository, BookRepository bookRepository, UserRepository userRepository) {
         this.loanRepository = loanRepository;
