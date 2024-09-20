@@ -25,6 +25,19 @@ public class BookController {
         return ResponseEntity.ok().body(list);
     }
 
+    @GetMapping("/available")
+    public ResponseEntity<Page<BookDTO>> findAvailableBooks(Pageable pageable) {
+        Page<BookDTO> list = service.findAvailableBooks(pageable);
+        return ResponseEntity.ok().body(list);
+    }
+
+
+    @GetMapping("/borrowed")
+    public ResponseEntity<Page<BookDTO>> findBooksUnavailable(Pageable pageable) {
+        Page<BookDTO> list = service.findByBorrowedTrue(pageable);
+        return ResponseEntity.ok().body(list);
+    }
+
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<BookDTO> findById(@PathVariable Long id) {
