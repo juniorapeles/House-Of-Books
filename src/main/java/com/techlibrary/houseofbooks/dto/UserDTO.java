@@ -14,7 +14,7 @@ public class UserDTO {
     }
 
     public UserDTO(User entity) {
-        this.name = entity.getName();
+        this.name = entity.getUsername();
     }
 
     public String getName() {

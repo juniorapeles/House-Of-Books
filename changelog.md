@@ -2,7 +2,7 @@
 
 Todas as mudanças importantes deste projeto.
 
-## [1.0.0] - 2024-09-18
+## [1.0.1] - 2024-09-18
 
 ### Adicionado
 - Primeira versão do projeto House-of-Books.
