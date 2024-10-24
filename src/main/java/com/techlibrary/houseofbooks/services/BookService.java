@@ -1,18 +1,17 @@
 package com.techlibrary.houseofbooks.services;
 
-import com.techlibrary.houseofbooks.dto.BookDTO;
+import com.techlibrary.houseofbooks.dtos.BookDTO;
 import com.techlibrary.houseofbooks.entities.Author;
 import com.techlibrary.houseofbooks.entities.Book;
-import com.techlibrary.houseofbooks.mapper.BookMapper;
 import com.techlibrary.houseofbooks.repositories.AuthorRepository;
 import com.techlibrary.houseofbooks.repositories.BookRepository;
 import com.techlibrary.houseofbooks.services.exceptions.DatabaseException;
 import com.techlibrary.houseofbooks.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,18 +20,16 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-    public class BookService {
+public class BookService {
 
     private static final String MSG_ID_NOT_FOUND = "id not found ";
     private static final String MSG_BOOK_NOT_FOUND = "Book not found";
 
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
-    private final BookMapper bookMapper;
 
-    public BookService(BookRepository bookRepository, AuthorRepository authorRepository, BookMapper bookMapper) {
+    public BookService(BookRepository bookRepository, AuthorRepository authorRepository) {
         this.bookRepository = bookRepository;
-        this.bookMapper = bookMapper;
         this.authorRepository = authorRepository;
     }
 
@@ -59,28 +56,23 @@ import java.util.Optional;
     }
 
     public BookDTO insertBook(BookDTO dto) {
-        Book entity = bookMapper.toEntity(dto);
-        entity.setName(dto.getName());
-        entity.setDescription(dto.getDescription());
+
+        Book entity = new Book();
+        BeanUtils.copyProperties(dto, entity);
+
         List<Author> authors = authorRepository.findAll();
+        Book finalEntity = entity;
         Author existingAuthor = authors.stream()
-                .filter(author -> author.getName().equals(dto.getAuthorName()))
+                .filter(author -> author.getName().equals(finalEntity.getAuthor().getName()))
                 .findFirst()
                 .orElse(null);
 
-        if (existingAuthor != null) {
+        var author = (existingAuthor != null)
+                ? existingAuthor
+                : authorRepository.save(new Author(dto.authorName(), dto.description()));
 
-            entity.setAuthor(existingAuthor);
-        } else {
-
-            Author newAuthor = new Author();
-            newAuthor.setName(dto.getAuthorName());
-            newAuthor = authorRepository.save(newAuthor);
-            entity.setAuthor(newAuthor);
-        }
-
+        entity.setAuthor(author);
         entity = bookRepository.save(entity);
-
         return new BookDTO(entity);
     }
 
@@ -90,12 +82,11 @@ import java.util.Optional;
             Book entity = bookRepository.findById(id)
                     .orElseThrow(() -> new ResourceNotFoundException(MSG_ID_NOT_FOUND + id));
 
-            entity.setName(dto.getName());
-            entity.setDescription(dto.getDescription());
+            BeanUtils.copyProperties(dto, entity);
 
             List<Author> authors = authorRepository.findAll();
             Author existingAuthor = authors.stream()
-                    .filter(author -> author.getName().equals(dto.getAuthorName()))
+                    .filter(author -> author.getName().equals(dto.authorName()))
                     .findFirst()
                     .orElse(null);
 
@@ -103,12 +94,12 @@ import java.util.Optional;
                 entity.setAuthor(existingAuthor);
             } else {
                 Author newAuthor = new Author();
-                newAuthor.setName(dto.getAuthorName());
+                newAuthor.setName(dto.authorName());
                 authorRepository.save(newAuthor);
                 entity.setAuthor(newAuthor);
             }
             entity = bookRepository.save(entity);
-            return bookMapper.toDTO(entity);
+            return new BookDTO(entity);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException(MSG_ID_NOT_FOUND + id);
         }
@@ -124,4 +115,7 @@ import java.util.Optional;
         }
     }
 
+    public boolean bookExists(Long id) {
+        return bookRepository.findById(id).isPresent();
+    }
 }

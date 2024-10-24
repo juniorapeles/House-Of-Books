@@ -1,9 +1,8 @@
 package com.techlibrary.houseofbooks.controllers;
 
 
-import com.techlibrary.houseofbooks.dto.BookDTO;
+import com.techlibrary.houseofbooks.dtos.BookDTO;
 import com.techlibrary.houseofbooks.services.BookService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -13,14 +12,17 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@CrossOrigin(origins = "http://127.0.0.1:5500")
 @RequestMapping("/books")
 public class BookController {
-    @Autowired
-    private BookService service;
+
+    public BookController(BookService service) {
+        this.service = service;
+    }
+
+    final BookService service;
 
     @GetMapping
-    public ResponseEntity<Page<BookDTO>> FindAll(Pageable pageable) {
+    public ResponseEntity<Page<BookDTO>> findAllPaged(Pageable pageable) {
         Page<BookDTO> list = service.findAllPaged(pageable);
         return ResponseEntity.ok().body(list);
     }
@@ -47,15 +49,19 @@ public class BookController {
 
     @PostMapping
     public ResponseEntity<BookDTO> insertBook(@RequestBody BookDTO dto) {
-        dto = service.insertBook(dto);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getName()).toUri();
-        return ResponseEntity.created(uri).body(dto);
-    }
+        BookDTO savedDTO = service.insertBook(dto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(savedDTO.id())
+                .toUri();
 
+        return ResponseEntity.created(uri).body(savedDTO);
+    }
     @PutMapping(value = "/{id}")
     public ResponseEntity<BookDTO> updateBook(@PathVariable Long id, @RequestBody BookDTO dto) {
-        dto = service.updateBook(id, dto);
-        return ResponseEntity.ok().body(dto);
+        return service.bookExists(id)
+                ? ResponseEntity.notFound().build()
+                : ResponseEntity.ok(service.updateBook(id, dto));
     }
 
     @DeleteMapping(value = "/{id}")

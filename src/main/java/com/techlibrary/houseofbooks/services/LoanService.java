@@ -1,7 +1,6 @@
 package com.techlibrary.houseofbooks.services;
 
-import com.techlibrary.houseofbooks.dto.BookDTO;
-import com.techlibrary.houseofbooks.dto.LoanDTO;
+import com.techlibrary.houseofbooks.dtos.LoanDTO;
 import com.techlibrary.houseofbooks.entities.Book;
 import com.techlibrary.houseofbooks.entities.Loan;
 import com.techlibrary.houseofbooks.entities.User;
@@ -11,15 +10,12 @@ import com.techlibrary.houseofbooks.repositories.UserRepository;
 import com.techlibrary.houseofbooks.services.exceptions.BookBorrowedException;
 import com.techlibrary.houseofbooks.services.exceptions.BookIsNotBorrowedException;
 import com.techlibrary.houseofbooks.services.exceptions.ResourceNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
-
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Service
 public class LoanService {
@@ -49,8 +45,8 @@ public class LoanService {
 
     public LoanDTO insertLoan(LoanDTO dto) {
 
-        Book bookEntity = bookRepository.findById(dto.getIdBook())
-                .orElseThrow(() -> new ResourceNotFoundException("Book not found with id: " + dto.getIdBook()));
+        Book bookEntity = bookRepository.findById(dto.idBook())
+                .orElseThrow(() -> new ResourceNotFoundException("Book not found with id: " + dto.idBook()));
 
         if (Boolean.TRUE.equals(bookEntity.getBorrowed())) {
             throw new BookBorrowedException("Book is already borrowed.");
@@ -59,7 +55,7 @@ public class LoanService {
             bookRepository.save(bookEntity);
         }
 
-        Optional<User> objUser = userRepository.findById(dto.getIdUser());
+        var objUser = userRepository.findById(dto.idUser());
         User userEntity = objUser.orElseThrow(() -> new ResourceNotFoundException("User not Found"));
 
         Loan loanEntity = new Loan(bookEntity, userEntity);

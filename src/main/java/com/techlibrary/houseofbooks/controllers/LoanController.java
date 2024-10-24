@@ -1,7 +1,7 @@
 package com.techlibrary.houseofbooks.controllers;
 
 
-import com.techlibrary.houseofbooks.dto.LoanDTO;
+import com.techlibrary.houseofbooks.dtos.LoanDTO;
 import com.techlibrary.houseofbooks.services.LoanService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,7 +37,7 @@ public class LoanController {
     @PostMapping
     public ResponseEntity<LoanDTO> insertLoan(@RequestBody LoanDTO dto) {
         dto = loanService.insertLoan(dto);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.id()).toUri();
         return ResponseEntity.created(uri).body(dto);
     }
 

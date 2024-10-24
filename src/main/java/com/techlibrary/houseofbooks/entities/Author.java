@@ -1,6 +1,5 @@
 package com.techlibrary.houseofbooks.entities;
 
-import com.techlibrary.houseofbooks.dto.AuthorDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
@@ -18,19 +17,12 @@ public class Author {
     public Author() {
     }
 
-    public Author(AuthorDTO authorDTO) {
-        this.name = authorDTO.getName();
-        this.biography = authorDTO.getBiography();
-    }
-
-    public Author(String name) {
-        this.name = name;
-    }
-
-    public Author(Long id, String name, String biography) {
-        this.id = id;
+    public Author(String name, String biography) {
         this.name = name;
         this.biography = biography;
+    }
+
+    public Author(String s) {
     }
 
     public Long getId() {
@@ -41,11 +33,11 @@ public class Author {
         this.id = id;
     }
 
-    public String getName() {
+    public @NotBlank(message = "the 'name' field cannot be blank") String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(@NotBlank(message = "the 'name' field cannot be blank") String name) {
         this.name = name;
     }
 
@@ -56,5 +48,4 @@ public class Author {
     public void setBiography(String biography) {
         this.biography = biography;
     }
-
 }
