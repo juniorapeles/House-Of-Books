@@ -1,26 +1,14 @@
-# Etapa 1: Build
-FROM maven:3.8.7-openjdk-17 AS builder
-
-# Diretório de trabalho dentro do container
-WORKDIR /app
-
-# Copia o código fonte para o container
-COPY . .
-
-# Compila o projeto e gera o JAR
-RUN mvn clean package -DskipTests
-
-# Etapa 2: Runtime
+# Use a imagem oficial do OpenJDK
 FROM openjdk:17-jdk-slim
 
-# Diretório de trabalho para o runtime
+# Defina o diretório de trabalho no contêiner
 WORKDIR /app
 
-# Copia o JAR gerado na etapa de build para o contêiner
-COPY --from=builder /app/target/house-of-books-0.0.1-SNAPSHOT.jar app.jar
+# Copie o arquivo .jar gerado do seu diretório de build para o contêiner
+COPY out/artifacts/house_of_books/house_of_books.jar /app/house_of_books.jar
 
-# Porta que a aplicação usará
-EXPOSE 8080
+# Exponha a porta 8084 (o novo número da porta)
+EXPOSE 8084
 
-# Comando para executar o JAR
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Defina o comando para rodar o JAR da sua aplicação
+CMD ["java", "-jar", "house_of_books.jar"]
