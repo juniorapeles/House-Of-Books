@@ -5,7 +5,7 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copie o arquivo .jar gerado do seu diretório de build para o contêiner
-COPY out/artifacts/house_of_books.jar /app/house_of_books.jar
+COPY out/artifacts/house_of_books/house_of_books.jar /app/house_of_books.jar
 
 # Exponha a porta 8084 (o novo número da porta)
 EXPOSE 8084
