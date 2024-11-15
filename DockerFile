@@ -1,13 +1,14 @@
-# Estágio de construção
-FROM maven:3.8.7-openjdk-18-slim AS build
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
-ADD . /usr/src/app
+# Use a imagem oficial do OpenJDK
+FROM openjdk:17-jdk-slim
 
-RUN mvn package
+# Defina o diretório de trabalho no contêiner
+WORKDIR /app
 
-FROM eclipse-temurin:17-jdk
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+# Copie o arquivo .jar gerado do seu diretório de build para o contêiner
+COPY out/artifacts/house_of_books.jar /app/house_of_books.jar
 
-CMD ["java", "-jar", "helloworld.jar"]
+# Exponha a porta 8084 (o novo número da porta)
+EXPOSE 8084
+
+# Defina o comando para rodar o JAR da sua aplicação
+CMD ["java", "-jar", "house_of_books.jar"]
