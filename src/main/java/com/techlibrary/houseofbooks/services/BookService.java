@@ -57,22 +57,28 @@ public class BookService {
 
     public BookDTO insertBook(BookDTO dto) {
 
+        // Cria uma nova instância de Book
         Book entity = new Book();
-        BeanUtils.copyProperties(dto, entity);
 
-        List<Author> authors = authorRepository.findAll();
-        Book finalEntity = entity;
-        Author existingAuthor = authors.stream()
-                .filter(author -> author.getName().equals(finalEntity.getAuthor().getName()))
-                .findFirst()
+        // Copia propriedades do DTO para a entidade, exceto o autor
+        BeanUtils.copyProperties(dto, entity, "author");
+
+        // Verifica se o autor já existe no banco de dados
+        Author existingAuthor = authorRepository.findByName(dto.authorName())
                 .orElse(null);
 
-        var author = (existingAuthor != null)
+        // Cria ou reutiliza o autor
+        Author author = (existingAuthor != null)
                 ? existingAuthor
                 : authorRepository.save(new Author(dto.authorName(), dto.description()));
 
+        // Associa o autor ao livro
         entity.setAuthor(author);
+
+        // Salva o livro no banco de dados
         entity = bookRepository.save(entity);
+
+        // Retorna o DTO do livro salvo
         return new BookDTO(entity);
     }
 

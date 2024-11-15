@@ -13,6 +13,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/books")
+@CrossOrigin(origins = "*")
 public class BookController {
 
     public BookController(BookService service) {
@@ -32,7 +33,6 @@ public class BookController {
         Page<BookDTO> list = service.findAvailableBooks(pageable);
         return ResponseEntity.ok().body(list);
     }
-
 
     @GetMapping("/borrowed")
     public ResponseEntity<Page<BookDTO>> findBooksUnavailable(Pageable pageable) {
@@ -57,6 +57,7 @@ public class BookController {
 
         return ResponseEntity.created(uri).body(savedDTO);
     }
+
     @PutMapping(value = "/{id}")
     public ResponseEntity<BookDTO> updateBook(@PathVariable Long id, @RequestBody BookDTO dto) {
         return service.bookExists(id)
