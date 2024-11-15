@@ -1,13 +1,26 @@
-# Estágio de construção
-FROM maven:3.8.7-openjdk-18-slim AS build
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
-ADD . /usr/src/app
+# Etapa 1: Build
+FROM maven:3.8.7-openjdk-17 AS builder
 
-RUN mvn package
+# Diretório de trabalho dentro do container
+WORKDIR /app
 
-FROM eclipse-temurin:17-jdk
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+# Copia o código fonte para o container
+COPY . .
 
-CMD ["java", "-jar", "helloworld.jar"]
+# Compila o projeto e gera o JAR
+RUN mvn clean package -DskipTests
+
+# Etapa 2: Runtime
+FROM openjdk:17-jdk-slim
+
+# Diretório de trabalho para o runtime
+WORKDIR /app
+
+# Copia o JAR gerado na etapa de build para o contêiner
+COPY --from=builder /app/target/house-of-books-0.0.1-SNAPSHOT.jar app.jar
+
+# Porta que a aplicação usará
+EXPOSE 8080
+
+# Comando para executar o JAR
+ENTRYPOINT ["java", "-jar", "app.jar"]
