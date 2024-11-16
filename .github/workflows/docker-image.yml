@@ -1,0 +1,35 @@
+name: CI for Java Backend
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout do código
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Configuração do JDK
+      - name: Setup JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      # Adicionar permissão de execução ao mvnw
+      - name: Grant execute permission for Maven wrapper
+        run: chmod +x ./mvnw
+
+      # Instalar dependências e compilar
+      - name: Install dependencies and build
+        run: ./mvnw clean install
+
+      # Executar testes
+      - name: Run tests
+        run: ./mvnw test
