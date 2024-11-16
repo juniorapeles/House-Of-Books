@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class BookService {
@@ -58,60 +57,37 @@ public class BookService {
     }
 
     public BookDTO insertBook(BookDTO dto) {
-
-        // Cria uma nova instância de Book
         Book entity = new Book();
-
-        // Copia propriedades do DTO para a entidade, exceto o autor
         BeanUtils.copyProperties(dto, entity, "author");
 
-        // Verifica se o autor já existe no banco de dados
         Author existingAuthor = authorRepository.findByName(dto.authorName())
                 .orElse(null);
 
-        // Cria ou reutiliza o autor
         Author author = (existingAuthor != null)
                 ? existingAuthor
                 : authorRepository.save(new Author(dto.authorName(), dto.description()));
-
-        // Associa o autor ao livro
         entity.setAuthor(author);
 
-        // Salva o livro no banco de dados
         entity = bookRepository.save(entity);
-
-        // Retorna o DTO do livro salvo
         return new BookDTO(entity);
     }
 
-
     public BookDTO updateBook(Long id, BookDTO dto) {
-        try {
-            Book entity = bookRepository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFoundException(MSG_ID_NOT_FOUND + id));
+        // Verificar se o livro existe no banco de dados
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
 
-            BeanUtils.copyProperties(dto, entity);
+        // Atualizar os valores do livro usando o DTO
+        book = setDtoUpdateValues(dto, book);
 
-            List<Author> authors = authorRepository.findAll();
-            Author existingAuthor = authors.stream()
-                    .filter(author -> author.getName().equals(dto.authorName()))
-                    .findFirst()
-                    .orElse(null);
+        // Salvar as mudanças no livro
+        book = bookRepository.save(book);
 
-            if (existingAuthor != null) {
-                entity.setAuthor(existingAuthor);
-            } else {
-                Author newAuthor = new Author();
-                newAuthor.setName(dto.authorName());
-                authorRepository.save(newAuthor);
-                entity.setAuthor(newAuthor);
-            }
-            entity = bookRepository.save(entity);
-            return new BookDTO(entity);
-        } catch (EntityNotFoundException e) {
-            throw new ResourceNotFoundException(MSG_ID_NOT_FOUND + id);
-        }
+        // Retornar o DTO atualizado
+        return new BookDTO(book);
     }
+
+
 
     public void deleteBookById(Long id) {
         try {
@@ -146,5 +122,25 @@ public class BookService {
         return savedBooksDTO;
     }
 
+    public Book setDtoUpdateValues(BookDTO dto, Book entity) {
+        // Atualiza os valores do livro
+        entity.setName(dto.name());
+        entity.setDescription(dto.description());
+        entity.setBorrowed(dto.borrowed());
+        entity.setAuthor(validaOuCriaAuthor(dto.authorName(), dto.description()));
+        return entity;
+    }
 
+    public Author validaOuCriaAuthor(String authorName, String description) {
+        // Verificar se o autor já existe no banco de dados
+        Author existingAuthor = authorRepository.findByName(authorName)
+                .orElse(null);
+
+        // Se o autor não existe, cria um novo e salva no banco
+        Author author = (existingAuthor != null)
+                ? existingAuthor
+                : authorRepository.save(new Author(authorName, description));
+
+        return author;
+    }
 }

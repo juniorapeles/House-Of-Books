@@ -66,14 +66,12 @@ public class BookController {
         return ResponseEntity.created(uri).body(savedList);
     }
 
-
     @PutMapping(value = "/{id}")
     public ResponseEntity<BookDTO> updateBook(@PathVariable Long id, @RequestBody BookDTO dto) {
         return service.bookExists(id)
                 ? ResponseEntity.ok(service.updateBook(id, dto))
                 : ResponseEntity.notFound().build();
     }
-
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<BookDTO> deleteBookById(@PathVariable Long id) {
