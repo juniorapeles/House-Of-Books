@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/books")
@@ -57,6 +58,14 @@ public class BookController {
 
         return ResponseEntity.created(uri).body(savedDTO);
     }
+
+    @PostMapping("batch")
+    public ResponseEntity<List<BookDTO>> insertMultipleBooks(@RequestBody List<BookDTO> dtos) {
+        List<BookDTO> savedList = service.insertMultipleBooks(dtos);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
+        return ResponseEntity.created(uri).body(savedList);
+    }
+
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<BookDTO> updateBook(@PathVariable Long id, @RequestBody BookDTO dto) {

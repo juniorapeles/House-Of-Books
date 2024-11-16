@@ -16,8 +16,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class BookService {
@@ -124,4 +126,25 @@ public class BookService {
     public boolean bookExists(Long id) {
         return bookRepository.findById(id).isPresent();
     }
+
+    public List<BookDTO> insertMultipleBooks(List<BookDTO> dtos) {
+        List<BookDTO> savedBooksDTO = new ArrayList<>();
+
+        for (BookDTO dto : dtos) {
+            Book entity = new Book();
+            BeanUtils.copyProperties(dto, entity, "author");
+            Author existingAuthor = authorRepository.findByName(dto.authorName())
+                    .orElse(null);
+            Author author = (existingAuthor != null)
+                    ? existingAuthor
+                    : authorRepository.save(new Author(dto.authorName(), dto.description()));
+
+            entity.setAuthor(author);
+            entity = bookRepository.save(entity);
+            savedBooksDTO.add(new BookDTO(entity));
+        }
+        return savedBooksDTO;
+    }
+
+
 }
