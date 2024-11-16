@@ -33,3 +33,30 @@ jobs:
       # Executar testes
       - name: Run tests
         run: ./mvnw test
+
+      # Empacotar o projeto (Se for necessário gerar um JAR ou WAR)
+      - name: Package project
+        run: ./mvnw package -DskipTests
+
+      # Construir a imagem Docker
+      - name: Build Docker image
+        run: |
+          docker build -t myusername/myapp:latest .
+      
+      # Fazer login no Docker Hub (ou outro registry, como AWS ECR)
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # Push da imagem Docker para o Docker Hub (ou outro registry)
+      - name: Push Docker image
+        run: |
+          docker push myusername/myapp:latest
+      
+      # Deploy no Render ou outro serviço (exemplo com API do Render)
+      - name: Deploy to Render
+        run: |
+          curl -sSL https://render.com/deploy?image=myusername/myapp:latest \
+          -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}"
