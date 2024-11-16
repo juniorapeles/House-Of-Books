@@ -8,11 +8,6 @@ public record BookDTO(Long id, String name, String authorName, String descriptio
     }
 
     @Override
-    public Long id() {
-        return id;
-    }
-
-    @Override
     public String name() {
         return name;
     }

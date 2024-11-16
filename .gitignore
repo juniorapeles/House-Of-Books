@@ -31,5 +31,3 @@ build/
 
 ### VS Code ###
 .vscode/
-###ignorando variaveis de ambiente####
-.env
