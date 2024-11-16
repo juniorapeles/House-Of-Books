@@ -70,9 +70,10 @@ public class BookController {
     @PutMapping(value = "/{id}")
     public ResponseEntity<BookDTO> updateBook(@PathVariable Long id, @RequestBody BookDTO dto) {
         return service.bookExists(id)
-                ? ResponseEntity.notFound().build()
-                : ResponseEntity.ok(service.updateBook(id, dto));
+                ? ResponseEntity.ok(service.updateBook(id, dto))  // Se o livro existe, atualiza e retorna OK
+                : ResponseEntity.notFound().build();  // Se o livro não existe, retorna Not Found
     }
+
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<BookDTO> deleteBookById(@PathVariable Long id) {
