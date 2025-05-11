@@ -1,31 +1,9 @@
-# Etapa 1: Build
-FROM openjdk:17-jdk-slim AS builder
-
-# Instalar o Maven manualmente
-RUN apt-get update && \
-    apt-get install -y maven
-
-# Diretório de trabalho dentro do container
+FROM maven:3.9.3-eclipse-temurin-17 as build
 WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
 
-# Copiar o arquivo pom.xml e baixar as dependências
-COPY pom.xml .
-RUN mvn dependency:go-offline
-
-# Copiar o código-fonte
-COPY src ./src
-
-# Compilar o projeto
-RUN mvn clean package
-
-# Etapa 2: Rodar a aplicação
-FROM openjdk:17-jdk-slim
-
+FROM eclipse-temurin:17-jdk
 WORKDIR /app
-
-# Copiar o .jar gerado da etapa de build
-COPY --from=builder /app/target/house-of-books-0.0.1-SNAPSHOT.jar /app/house-of-books.jar
-
-EXPOSE 8081
-
-CMD ["java", "-jar", "/app/house-of-books.jar"]
+COPY --from=build /app/target/app.jar app.jar
+ENTRYPOINT ["java", "-jar", "app.jar"]
