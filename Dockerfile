@@ -26,6 +26,6 @@ WORKDIR /app
 # Copiar o .jar gerado da etapa de build
 COPY --from=builder /app/target/house-of-books-0.0.1-SNAPSHOT.jar /app/house-of-books.jar
 
-EXPOSE 8080
+EXPOSE 8081
 
 CMD ["java", "-jar", "/app/house-of-books.jar"]
