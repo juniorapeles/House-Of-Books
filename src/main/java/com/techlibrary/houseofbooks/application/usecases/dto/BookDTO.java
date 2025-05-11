@@ -1,16 +1,26 @@
 package com.techlibrary.houseofbooks.application.usecases.dto;
 
+import com.techlibrary.houseofbooks.domain.model.Book;
+
 public class BookDTO {
 
     private String title;
     private String author;
     private String isbn;
 
+    public BookDTO() {
+    }
 
     public BookDTO(String title, String author, String isbn) {
         this.title = title;
         this.author = author;
         this.isbn = isbn;
+    }
+
+    public BookDTO(Book book) {
+        this.title = book.getTitle();
+        this.author = book.getAuthor();
+        this.isbn = book.getIsbn();
     }
 
     public String getTitle() {

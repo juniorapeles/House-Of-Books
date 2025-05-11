@@ -14,7 +14,7 @@ public class CreateBookUseCaseImpl implements CreateBookUseCase {
     }
 
     @Override
-    public Book execute(BookDTO dto) {
+    public BookDTO execute(BookDTO dto) {
         return bookJpaAdapter.execute(dto);
     }
 

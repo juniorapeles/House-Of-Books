@@ -1,5 +1,6 @@
 package com.techlibrary.houseofbooks.domain.model;
 
+import com.techlibrary.houseofbooks.application.usecases.dto.BookDTO;
 import jakarta.persistence.*;
 
 @Entity
@@ -14,6 +15,11 @@ public class Book {
     private String isbn;
 
     public Book() {
+    }
+    public Book(BookDTO dto) {
+        this.title = dto.getTitle();
+        this.author = dto.getAuthor();
+        this.isbn = dto.getIsbn();
     }
 
     public Book(String title, String author, String isbn) {
