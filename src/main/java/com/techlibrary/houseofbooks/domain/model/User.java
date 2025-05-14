@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 
 @Table(name = "tb_users")
@@ -16,21 +17,22 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String UUID;
+    private UUID id;
     private String name;
     private String secret;
     private UserRole role;
 
     public User() {
     }
+
     public User(String name, String secret, UserRole role) {
         this.name = name;
         this.secret = secret;
         this.role = role;
     }
 
-    public User(String UUID, String name, String secret, UserRole role) {
-        this.UUID = UUID;
+    public User(UUID UUID, String name, String secret, UserRole role) {
+        this.id = UUID;
         this.name = name;
         this.secret = secret;
         this.role = role;
@@ -44,12 +46,12 @@ public class User implements UserDetails {
         this.role = role;
     }
 
-    public String getUUID() {
-        return UUID;
+    public UUID getId() {
+        return id;
     }
 
-    public void setUUID(String UUID) {
-        this.UUID = UUID;
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getName() {
