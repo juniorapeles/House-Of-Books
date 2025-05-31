@@ -1,8 +1,8 @@
 //package com.techlibrary.houseofbooks.application.usecases.impl;
 //
 //import com.techlibrary.houseofbooks.application.usecases.AuthApiKeyUseCase;
-//import com.techlibrary.houseofbooks.infrastructure.persistence.ApiKeyRepository;
-//import com.techlibrary.houseofbooks.infrastructure.security.JwtService;
+//import com.techlibrary.houseofbooks.service.base.ApiKeyRepository;
+//import com.techlibrary.houseofbooks.service.security.JwtService;
 //import org.springframework.stereotype.Service;
 //
 //@Service

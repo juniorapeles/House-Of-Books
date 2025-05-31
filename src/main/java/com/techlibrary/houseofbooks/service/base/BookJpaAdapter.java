@@ -1,7 +1,7 @@
-package com.techlibrary.houseofbooks.infrastructure.persistence;
+package com.techlibrary.houseofbooks.service.base;
 
-import com.techlibrary.houseofbooks.application.usecases.*;
-import com.techlibrary.houseofbooks.application.usecases.dto.BookDTO;
+import com.techlibrary.houseofbooks.datasource.def.*;
+import com.techlibrary.houseofbooks.datasource.dto.BookDTO;
 import com.techlibrary.houseofbooks.domain.model.Book;
 import org.springframework.stereotype.Component;
 

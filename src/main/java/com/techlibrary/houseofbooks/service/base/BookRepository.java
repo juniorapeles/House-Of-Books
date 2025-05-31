@@ -1,4 +1,4 @@
-package com.techlibrary.houseofbooks.infrastructure.persistence;
+package com.techlibrary.houseofbooks.service.base;
 
 import com.techlibrary.houseofbooks.domain.model.Book;
 import org.springframework.data.jpa.repository.JpaRepository;

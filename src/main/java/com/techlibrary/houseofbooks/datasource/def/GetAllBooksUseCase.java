@@ -1,6 +1,6 @@
-package com.techlibrary.houseofbooks.application.usecases;
+package com.techlibrary.houseofbooks.datasource.def;
 
-import com.techlibrary.houseofbooks.application.usecases.dto.BookDTO;
+import com.techlibrary.houseofbooks.datasource.dto.BookDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

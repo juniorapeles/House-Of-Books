@@ -1,4 +1,4 @@
-package com.techlibrary.houseofbooks.application.usecases.dto;
+package com.techlibrary.houseofbooks.datasource.dto;
 
 import com.techlibrary.houseofbooks.domain.model.Book;
 

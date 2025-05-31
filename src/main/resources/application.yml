@@ -1,9 +1,15 @@
 spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
   datasource:
     url: ${DB_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
-    driver-class-name: ${DB_DRIVER}
+    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: ${DB_DDL_AUTO}
@@ -11,3 +17,19 @@ spring:
     properties:
       hibernate:
         dialect: ${DB_DIALECT}
+        envers:
+          audit_table_suffix: _AUD
+          store_date_at_delete: true
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password:
+      timeout: 2000ms
+
+queue:
+  loan: loan-queue
+
+rabbitmq:
+  exchange: loan-exchange
+  routingKey: loan-routing-key

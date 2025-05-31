@@ -1,8 +1,8 @@
-package com.techlibrary.houseofbooks.application.usecases.impl;
+package com.techlibrary.houseofbooks.datasource.impl;
 
-import com.techlibrary.houseofbooks.application.usecases.UpdateBookUseCase;
-import com.techlibrary.houseofbooks.application.usecases.dto.BookDTO;
-import com.techlibrary.houseofbooks.infrastructure.persistence.BookJpaAdapter;
+import com.techlibrary.houseofbooks.datasource.def.UpdateBookUseCase;
+import com.techlibrary.houseofbooks.datasource.dto.BookDTO;
+import com.techlibrary.houseofbooks.service.base.BookJpaAdapter;
 
 public class UpdateBookUseImpl implements UpdateBookUseCase {
 

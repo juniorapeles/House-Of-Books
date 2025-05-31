@@ -1,13 +1,11 @@
-package com.techlibrary.houseofbooks.infrastructure.controller;
+package com.techlibrary.houseofbooks.service.controller;
 
-import com.techlibrary.houseofbooks.application.usecases.*;
-import com.techlibrary.houseofbooks.application.usecases.dto.BookDTO;
-import com.techlibrary.houseofbooks.domain.model.Book;
+import com.techlibrary.houseofbooks.datasource.def.*;
+import com.techlibrary.houseofbooks.datasource.dto.BookDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @RestController

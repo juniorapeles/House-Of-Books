@@ -1,4 +1,4 @@
-package com.techlibrary.houseofbooks.application.usecases;
+package com.techlibrary.houseofbooks.datasource.def;
 
 public interface DeleteBookByIdUseCase {
 
