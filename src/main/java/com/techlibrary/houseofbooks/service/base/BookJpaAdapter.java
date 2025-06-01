@@ -1,8 +1,8 @@
 package com.techlibrary.houseofbooks.service.base;
 
-import com.techlibrary.houseofbooks.datasource.def.*;
-import com.techlibrary.houseofbooks.datasource.dto.BookDTO;
-import com.techlibrary.houseofbooks.domain.model.Book;
+import com.techlibrary.houseofbooks.datasource.def.book.*;
+import com.techlibrary.houseofbooks.service.dto.BookDTO;
+import com.techlibrary.houseofbooks.domain.book.Book;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

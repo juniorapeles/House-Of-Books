@@ -1,6 +1,6 @@
 package com.techlibrary.houseofbooks.service.audit;
 
-import com.techlibrary.houseofbooks.domain.model.Book;
+import com.techlibrary.houseofbooks.domain.book.Book;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.hibernate.envers.AuditReader;

@@ -2,8 +2,8 @@
 //
 //import com.techlibrary.houseofbooks.application.security.config.UserRepository;
 //import com.techlibrary.houseofbooks.domain.model.User;
-//import com.techlibrary.houseofbooks.domain.model.dto.AuthenticationDTO;
-//import com.techlibrary.houseofbooks.domain.model.dto.RegisterDTO;
+//import com.techlibrary.houseofbooks.service.dto.AuthenticationDTO;
+//import com.techlibrary.houseofbooks.service.dto.RegisterDTO;
 //import org.springframework.http.ResponseEntity;
 //import org.springframework.security.authentication.AuthenticationManager;
 //import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

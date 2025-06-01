@@ -1,7 +1,7 @@
 package com.techlibrary.houseofbooks.service.controller;
 
-import com.techlibrary.houseofbooks.datasource.def.*;
-import com.techlibrary.houseofbooks.datasource.dto.BookDTO;
+import com.techlibrary.houseofbooks.datasource.def.book.*;
+import com.techlibrary.houseofbooks.service.dto.BookDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
