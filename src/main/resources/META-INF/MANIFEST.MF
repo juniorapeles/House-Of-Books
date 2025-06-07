@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
-Main-Class: com.techlibrary.houseofbooks.HouseOfBooksApplication
+Main-Class: com.techlibrary.HouseOfBooksApplication
 
