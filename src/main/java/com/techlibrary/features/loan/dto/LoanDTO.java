@@ -1,6 +1,8 @@
 package com.techlibrary.features.loan.dto;
 
 
+import com.techlibrary.features.book.dto.BookDTO;
+import com.techlibrary.features.user.dto.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,5 +13,6 @@ import lombok.NoArgsConstructor;
 public class LoanDTO {
 
     // TODO: Defina os campos do DTO aqui
-    private Long id;
+    private BookDTO book;
+    private UserDTO user;
 }

@@ -11,5 +11,6 @@ import lombok.NoArgsConstructor;
 public class UserDTO {
 
     // TODO: Defina os campos do DTO aqui
+    private Long id;
     private String username;
 }

@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 public class BookDTO {
 
     // TODO: Defina os campos do DTO aqui
+    private Long id;
     private String title;
     private String author;
 }

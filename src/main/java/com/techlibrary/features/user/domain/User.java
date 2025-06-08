@@ -21,5 +21,5 @@ public class User {
     private Long id;
 
     // TODO: Defina de User aqui.
-
+    private String username;
 }
