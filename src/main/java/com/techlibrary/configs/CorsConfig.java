@@ -14,7 +14,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // libera todos os endpoints
-                        .allowedOrigins("http://localhost:3000") // libera o frontend
+                        .allowedOrigins("http://library.juniorapeles.xyz")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
