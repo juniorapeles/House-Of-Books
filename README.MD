@@ -84,6 +84,49 @@ com.techlibrary
 }
 ```
 
+## ▶️ Execução local 
+- Vá para a pasta do projeto
+- Execute o comando abaixo para subir o banco de dados localmente:
+```shell
+    make local-database-start
+```
+
+- Aguarde o banco subir e execute o comando abaixo para subir a aplicação localmente via terminal e com o perfil `local-postgree`
+```shell
+    make local-app-start;
+```
+
+- Para cadastrar um novo livro, execute a instrução `curl` abaixo:
+```shell
+    curl --request POST \
+      --url http://localhost:8080/books \
+      --header 'Access-Control-Allow-Origin: *' \
+      --header 'Content-Type: application/json' \
+      --header 'User-Agent: insomnia/11.6.1' \
+      --data '{
+        "title": "Duna",
+        "author": "Frank Herbert"
+    }'
+```
+
+- Para visualizar o livro cadastrado, execute a instrução `curl` abaixo:
+```shell
+    curl --request GET \
+      --url http://localhost:8080/books \
+      --header 'Access-Control-Allow-Origin: *' \
+      --header 'Content-Type: application/json' \
+      --header 'User-Agent: insomnia/11.6.1'
+```
+
+- Para parar a execução do banco de dados local:
+```shell
+    make local-database-down
+```
+
+- Para visualizar os logs do container local:
+```shell
+    make local-database-logs
+```
 ## ✅ To-Do Futuro
 
 - Implementar autenticação (Spring Security + JWT)
